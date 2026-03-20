@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>灰冰的名片</title>
+<title>灰冰名片</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
 body{
@@ -72,7 +72,7 @@ body{
   background: #fff;
   padding: 20px 30px;
   border-radius: 12px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 5px 20 rgba(0,0,0,0.15);
   text-align: center;
   opacity: 0;
   transform: translateY(-20px);
@@ -193,33 +193,40 @@ body{
   text-decoration: none;
 }
 
-/* QQ按钮 */
+/* QQ按钮 蓝色 */
 .qq {
-  background: #2ecc71;
-  animation: bounce 2s infinite, glow-green 2s infinite alternate;
-}
-@keyframes glow-green {
-  from {box-shadow: 0 0 5px #2ecc71;}
-  to {box-shadow: 0 0 15px #2ecc71;}
-}
-.qq:hover {
-  background: #27ae60;
-}
-
-/* 抖音按钮 */
-.douyin {
-  background: #007bff;
-  animation: bounce 2s infinite 0.5s, glow-blue 2s infinite alternate 0.5s;
+  background: #0066ff;
+  animation: bounce 2s infinite, glow-blue 2s infinite alternate;
 }
 @keyframes glow-blue {
-  from {box-shadow: 0 0 5px #007bff;}
-  to {box-shadow: 0 0 15px #007bff;}
+  from {box-shadow: 0 0 5px #0066ff;}
+  to {box-shadow: 0 0 15px #0066ff;}
 }
-.douyin:hover {
-  background: #0056b3;
+.qq:hover {
+  background: #0052cc;
 }
 
-/* 快手按钮 */
+/* 抖音按钮 黑红蓝 */
+.douyin {
+  background: #000;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  animation: bounce 2s infinite 0.5s;
+}
+.douyin::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(45deg, #fe2c55, #25f4ee);
+  opacity: 0.9;
+  z-index: -1;
+}
+.douyin:hover {
+  opacity: 0.9;
+}
+
+/* 快手按钮 橙色 */
 .kuaishou {
   background: #ff7800;
   animation: bounce 2s infinite 1s, glow-orange 2s infinite alternate 1s;
@@ -232,17 +239,18 @@ body{
   background: #e66a00;
 }
 
-/* 日志按钮（和其他三个样式一样，蓝色） */
+/* 日志按钮 黄+红+绿+蓝 四色渐变 */
 .log-btn {
-  background: #0066ff;
-  animation: bounce 2s infinite 1.2s, glow-log 2s infinite alternate 1.2s;
+  background: linear-gradient(90deg, #ffdd00, #ff3333, #33cc33, #3399ff);
+  background-size: 400% 100%;
+  animation: colorMove 6s linear infinite, bounce 2s infinite 1.2s;
 }
-@keyframes glow-log {
-  from {box-shadow: 0 0 5px #0066ff;}
-  to {box-shadow: 0 0 15px #0066ff;}
+@keyframes colorMove {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 .log-btn:hover {
-  background: #0052cc;
+  opacity: 0.9;
 }
 
 /* 日志面板 */
@@ -274,7 +282,6 @@ body{
 }
 .log-box h2 {
   margin-bottom: 20px;
-  color: #0066ff;
 }
 .log-box h3 {
   margin: 16px 0 8px;
@@ -398,19 +405,19 @@ body{
 <div id="logPanel">
   <div class="log-box">
     <h2>📋 灰冰名片网站 · 更新日志</h2>
-    <p><strong>版本：1.7v 测试稳定版</strong><br>更新时间：2026.03.20</p>
+    <p><strong>版本：V1.9 尝试版</strong><br>更新时间：2026年03月20日</p>
 
     <h3>✅ 已实现功能</h3>
     <ul>
       <li>蓝色进度条加载动画</li>
       <li>加载完成欢迎弹窗，可正常关闭</li>
       <li>完整个人信息展示</li>
-      <li>QQ绿色弹跳发光按钮</li>
-      <li>抖音蓝色弹跳发光按钮</li>
+      <li>QQ按钮改为蓝色</li>
+      <li>抖音黑红蓝渐变风格按钮</li>
       <li>快手橙色弹跳发光按钮</li>
+      <li>日志按钮改为黄红绿蓝四色流光渐变</li>
       <li>浅色/深色模式自动适配</li>
       <li>手机/电脑双端适配</li>
-      <li>日志按钮样式统一</li>
       <li>点击名字连击抱抱计数</li>
       <li>0.05秒冷却防御，防止疯狂点击</li>
     </ul>
@@ -418,7 +425,7 @@ body{
     <h3>🎯 使用方法</h3>
     <ul>
       <li>电脑：按 L 打开日志，ESC 关闭</li>
-      <li>手机：点下方日志按钮打开</li>
+      <li>手机：点下方四色日志按钮打开</li>
       <li>点击「灰冰」获得抱抱，连击更跟手</li>
       <li>过快点击会提示不能连续点击</li>
     </ul>
