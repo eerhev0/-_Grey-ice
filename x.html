@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>灰冰名片</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+body{
+  background:#fff;color:#222;
+  padding:20px;
+  display:flex;justify-content:center;align-items:center;
+  min-height:100vh;
+}
+@media(prefers-color-scheme:dark){
+  body{background:#121212;color:#eee}
+}
+
+/* 加载遮罩 */
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+@media(prefers-color-scheme:dark){
+  #loader {background: #121212;}
+}
+
+/* 进度条 */
+.progress-bar {
+  width: 80%;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+@media(prefers-color-scheme:dark){
+  .progress-bar {background: #333;}
+}
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: #12b7f5;
+  animation: loadProgress 1.5s ease-out forwards;
+}
+@keyframes loadProgress {
+  0% {width: 0;}
+  100% {width: 100%;}
+}
+
+/* 加载文字 */
+.loading-text {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+@media(prefers-color-scheme:dark){
+  .loading-text {color: #aaa;}
+}
+
+/* 加载完成弹窗 */
+#donePopup {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20 rgba(0,0,0,0.15);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: showPopup 0.5s ease-out 1.5s forwards;
+}
+@media(prefers-color-scheme:dark){
+  #donePopup {background: #1e1e1e; color: #fff;}
+}
+@keyframes showPopup {
+  to {opacity: 1; transform: translateY(0);}
+}
+.done-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.done-desc {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+@media(prefers-color-scheme:dark){
+  .done-desc {color: #aaa;}
+}
+#startBtn {
+  padding: 10px 20px;
+  background: #12b7f5;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+#startBtn:hover {
+  background: #0ea6e0;
+}
+
+/* 名片卡片 */
+.card {
+  max-width: 600px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  padding: 30px;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+.card.show {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* 副简介暗色模式样式 */
+.card.secret-mode {
+  background: #3a0e0e;
+  color: #ffb3b3;
+}
+.card.secret-mode .label {
+  color: #ff9999;
+}
+.card.secret-mode .title {
+  color: #ffcccc;
+}
+
+/* 点击名字彩蛋样式 */
+.name {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.name:hover {
+  transform: scale(1.05);
+}
+.title {
+  color: #666;
+  margin-bottom: 24px;
+  font-size: 20px;
+}
+@media(prefers-color-scheme:dark){
+  .title {color: #aaa;}
+}
+.item {
+  margin: 16px 0;
+}
+.label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+@media(prefers-color-scheme:dark){
+  .label {color: #aaa;}
+}
+.info {
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+/* 弹跳动画 */
+@keyframes bounce {
+  0%,20%,50%,80%,100% {transform: translateY(0);}
+  40% {transform: translateY(-8px);}
+  60% {transform: translateY(-4px);}
+}
+
+/* 闪烁动画 */
+@keyframes blink {
+  0%,100% { opacity:1; }
+  50% { opacity:0.7; }
+}
+
+/* 统一按钮样式 */
+.btn {
+  margin-top: 16px;
+  padding: 12px 24px;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-align: center;
+  display: block;
+  text-decoration: none;
+}
+
+/* QQ按钮 蓝色 */
+.qq {
+  background: #0066ff;
+  animation: bounce 2s infinite, glow-blue 2s infinite alternate;
+}
+@keyframes glow-blue {
+  from {box-shadow: 0 0 5px #0066ff;}
+  to {box-shadow: 0 0 15px #0066ff;}
+}
+.qq:hover {
+  background: #0052cc;
+}
+
+/* 抖音按钮 黑红蓝 */
+.douyin {
+  background: #000;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  animation: bounce 2s infinite 0.5s;
+}
+.douyin::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(45deg, #fe2c55, #25f4ee);
+  opacity: 0.9;
+  z-index: -1;
+}
+.douyin:hover {
+  opacity: 0.9;
+}
+
+/* 快手按钮 橙色 */
+.kuaishou {
+  background: #ff7800;
+  animation: bounce 2s infinite 1s, glow-orange 2s infinite alternate 1s;
+}
+@keyframes glow-orange {
+  from {box-shadow: 0 0 5px #ff7800;}
+  to {box-shadow: 0 0 15px #ff7800;}
+}
+.kuaishou:hover {
+  background: #e66a00;
+}
+
+/* 小红书按钮 红色 */
+.xiaohongshu {
+  background: #ff2442;
+  animation: bounce 2s infinite 0.9s, glow-red 2s infinite alternate 0.9s;
+}
+@keyframes glow-red {
+  from {box-shadow: 0 0 5px #ff2442;}
+  to {box-shadow: 0 0 15px #ff2442;}
+}
+.xiaohongshu:hover {
+  background: #e01f3a;
+}
+
+/* 微信按钮 绿色 */
+.wechat {
+  background: #07c160;
+  animation: bounce 2s infinite 0.7s, glow-green 2s infinite alternate 0.7s;
+}
+@keyframes glow-green {
+  from {box-shadow: 0 0 5px #07c160;}
+  to {box-shadow: 0 0 15px #07c160;}
+}
+.wechat:hover {
+  background: #06ad56;
+}
+
+/* 推特按钮 黑色+闪烁+弹跳 */
+.twitter {
+  background: #000;
+  color: #fff;
+  animation: bounce 2s infinite, blink 1.2s infinite;
+}
+.twitter:hover {
+  background: #222;
+}
+
+/* 日志按钮 四色渐变 */
+.log-btn {
+  background: linear-gradient(90deg, #ffdd00, #ff3333, #33cc33, #3399ff);
+  background-size: 400% 100%;
+  animation: colorMove 6s linear infinite, bounce 2s infinite 1.2s;
+}
+@keyframes colorMove {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+.log-btn:hover {
+  opacity: 0.9;
+}
+
+/* 日志面板 */
+#logPanel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  padding: 20px;
+}
+.log-box {
+  background: #fff;
+  max-width: 600px;
+  width: 100%;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30 rgba(0,0,0,0.3);
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+@media(prefers-color-scheme:dark){
+  .log-box {background: #1e1e1e; color: #fff;}
+}
+.log-box h2 {
+  margin-bottom: 20px;
+}
+.log-box h3 {
+  margin: 16px 0 8px;
+}
+.log-box p, .log-box li {
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+.log-box ul {
+  padding-left: 20px;
+}
+.close-log {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #0066ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+}
+
+/* 日志右上角小彩蛋按钮 */
+#easterBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #666;
+  color: #fff;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+}
+#easterBtn:hover {
+  opacity: 1;
+}
+
+/* 爆炸表情包弹窗 */
+#boomEaster {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80px;
+  z-index: 9999999;
+  display: none;
+  animation: boomPop 0.6s ease-out forwards;
+}
+@keyframes boomPop {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  60% { transform: translate(-50%, -50%) scale(1.2); }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* 微信弹窗 */
+#wechatModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+  padding: 20px;
+}
+.wechat-card {
+  background: #fff;
+  max-width: 320px;
+  width: 100%;
+  padding: 25px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+@media(prefers-color-scheme:dark){
+  .wechat-card {background: #1e1e1e; color: #fff;}
+}
+.wx-id {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 15px 0;
+  color: #07c160;
+}
+.copy-btn {
+  padding: 10px 20px;
+  background: #07c160;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.close-wechat {
+  padding: 10px 20px;
+  background: #ccc;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+}
+
+/* 抱抱弹窗 */
+#hugTip {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40 rgba(0,0,0,0.2);
+  font-size: 20px;
+  font-weight: bold;
+  color: #ff69b4;
+  display: none;
+  z-index: 999999;
+  white-space: nowrap;
+}
+@media(prefers-color-scheme:dark){
+  #hugTip {background: #222; color: #ff9ecf;}
+}
+
+/* 冷却提示弹窗 */
+#cdTip {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40 rgba(0,0,0,0.2);
+  font-size: 20px;
+  font-weight: bold;
+  color: #ff4444;
+  display: none;
+  z-index: 999999;
+  white-space: nowrap;
+}
+@media(prefers-color-scheme:dark){
+  #cdTip {background: #222; color: #ff6666;}
+}
+</style>
+</head>
+<body>
+
+<!-- 加载 -->
+<div id="loader">
+  <div class="progress-bar"><div class="progress-fill"></div></div>
+  <div class="loading-text">正在加载灰冰的名片...</div>
+  <div id="donePopup">
+    <div class="done-title">加载完毕！</div>
+    <div class="done-desc">欢迎来到灰冰的名片网站</div>
+    <button id="startBtn">开始浏览</button>
+  </div>
+</div>
+
+<!-- 名片 -->
+<div class="card" id="card">
+  <div class="name" id="nameClick">灰冰</div>
+  <div class="title">小学生</div>
+
+  <div class="item" id="infoSecIntro">
+    <div class="label">简介</div>
+    <div class="info" id="infoDesc">Hello大家好我是灰冰👋是入圈了半年的福瑞，是一名香港六年级小学生，也是会偶尔抱怨的小学生，偶尔会社恐，偶尔也会社牛，此外还有拥有自己的兽装</div>
+  </div>
+  
+  <div class="item" id="infoSecSkill">
+    <div class="label">技能</div>
+    <div class="info" id="infoSkill">玩抽象 / 低情商 / 会复仇</div>
+  </div>
+
+  <div class="item" id="infoSecXiaohongshu">
+    <div class="label">小红书</div>
+    <div class="info">号：95118212301 | 获赞与收藏：25</div>
+  </div>
+
+  <div class="item" id="infoSecPhone">
+    <div class="label">电话</div>
+    <div class="info">18944774556</div>
+  </div>
+
+  <div class="item" id="infoSecEmail">
+    <div class="label">邮箱</div>
+    <div class="info">ggcg1774@gmail.com</div>
+  </div>
+
+  <div class="item" id="infoSecWechatInfo">
+    <div class="label">微信</div>
+    <div class="info">San823016803</div>
+  </div>
+
+  <div class="item" id="infoSecQqInfo">
+    <div class="label">QQ</div>
+    <div class="info">2352145257</div>
+  </div>
+
+  <div class="item" id="infoSecSns">
+    <div class="label">社交媒体</div>
+    <div class="info" id="infoSns">微信、抖音、快手、b站、小红书、qq</div>
+  </div>
+
+  <a class="btn qq" href="https://qm.qq.com/q/wEnQhLHW1w" target="_blank">🐾 戳我加灰冰为QQ好友</a>
+  <a class="btn douyin" href="https://v.douyin.com/Otl2speIq08/" target="_blank">🎬 戳我看灰冰的抖音主页</a>
+  <a class="btn kuaishou" href="https://v.kuaishou.com/Jb6WKtca" target="_blank">🎥 戳戳快看灰冰快手主页</a>
+  <a class="btn xiaohongshu" href="https://xhslink.com/m/5086Efv0jbU" target="_blank">📕 戳我看灰冰的小红书</a>
+  <button class="btn wechat" id="wechatBtn">💬 查看灰冰微信号</button>
+  
+  <!-- 推特按钮 仅副简介显示 -->
+  <a class="btn twitter" id="twitterBtn" href="https://x.com/ggcg281650" target="_blank" style="display:none;">🔗 前往灰冰的推特</a>
+
+  <button class="btn log-btn" id="logBtn">📋 查看更新日志</button>
+</div>
+
+<!-- 微信弹窗 -->
+<div id="wechatModal">
+  <div class="wechat-card">
+    <h3>添加我的微信</h3>
+    <div class="wx-id" id="wxId">San823016803</div>
+    <button class="copy-btn" id="copyBtn">📋 一键复制微信号</button>
+    <button class="close-wechat" id="closeWechat">关闭</button>
+  </div>
+</div>
+
+<!-- 日志面板 -->
+<div id="logPanel">
+  <div class="log-box">
+    <button id="easterBtn">!</button>
+    <h2>📋 更新日志</h2>
+    <p><strong>版本：2.1 彩蛋版</strong><br>更新时间：2026年03月28日</p>
+    <h3>✅ 新增功能</h3>
+    <ul>
+      <li>新增5次爆炸💥彩蛋：点击右上角「!」5次 → 加载 → 切换隐藏简介</li>
+      <li>隐藏简介新增推特按钮，带闪烁动画</li>
+      <li>主简介完整保留所有按钮</li>
+    </ul>
+    <button class="close-log">关闭日志</button>
+  </div>
+</div>
+
+<!-- 爆炸表情包 -->
+<div id="boomEaster">💥</div>
+
+<!-- 抱抱弹窗 -->
+<div id="hugTip">🎉 灰冰的抱抱 ×1</div>
+<!-- 冷却提示 -->
+<div id="cdTip">🚫 不能连续点击哦</div>
+
+<script>
+  const startBtn = document.getElementById('startBtn');
+  const loader = document.getElementById('loader');
+  const card = document.getElementById('card');
+
+  startBtn.addEventListener('click', function() {
+    loader.style.display = 'none';
+    card.classList.add('show');
+  });
+
+  // 日志
+  const logPanel = document.getElementById('logPanel');
+  const logBtn = document.getElementById('logBtn');
+  const closeLog = document.querySelector('.close-log');
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key.toLowerCase() === 'l') logPanel.style.display = 'flex';
+    if(e.key === 'Escape') logPanel.style.display = 'none';
+  });
+
+  logBtn.onclick = () => logPanel.style.display = 'flex';
+  closeLog.onclick = () => logPanel.style.display = 'none';
+  logPanel.onclick = (e) => {
+    if(e.target === logPanel) logPanel.style.display = 'none';
+  };
+
+  // 微信弹窗 + 复制
+  const wechatBtn = document.getElementById('wechatBtn');
+  const wechatModal = document.getElementById('wechatModal');
+  const closeWechat = document.getElementById('closeWechat');
+  const copyBtn = document.getElementById('copyBtn');
+  const wxId = document.getElementById('wxId').innerText;
+
+  wechatBtn.onclick = () => wechatModal.style.display = 'flex';
+  closeWechat.onclick = () => wechatModal.style.display = 'none';
+  wechatModal.onclick = (e) => {
+    if(e.target === wechatModal) wechatModal.style.display = 'none';
+  };
+
+  copyBtn.onclick = () => {
+    navigator.clipboard.writeText(wxId).then(() => {
+      alert('复制成功！快去微信添加我吧～');
+    });
+  };
+
+  // 抱抱连击
+  const nameClick = document.getElementById('nameClick');
+  const hugTip = document.getElementById('hugTip');
+  const cdTip = document.getElementById('cdTip');
+  
+  let hugCount = 0;
+  let lastClick = 0;
+  const CD = 50;
+
+  nameClick.addEventListener('click', () => {
+    const now = Date.now();
+    if (now - lastClick < CD) {
+      cdTip.style.display = 'block';
+      setTimeout(() => cdTip.style.display = 'none', 1000);
+      return;
+    }
+    lastClick = now;
+    hugCount++;
+    hugTip.textContent = `🎉 灰冰的抱抱 ×${hugCount}`;
+    hugTip.style.display = 'block';
+    setTimeout(() => hugTip.style.display = 'none', 1200);
+  });
+
+  // ========== 5次爆炸 → 重新加载 → 切换副简介 ==========
+  const easterBtn = document.getElementById('easterBtn');
+  const boomEaster = document.getElementById('boomEaster');
+  const nameEl = document.getElementById('nameClick');
+  const titleEl = document.querySelector('.title');
+  
+  const infoDescEl = document.getElementById('infoDesc');
+  const infoSkillEl = document.getElementById('infoSkill');
+  const infoSnsEl = document.getElementById('infoSns');
+  const twitterBtn = document.getElementById('twitterBtn');
+
+  // 需要隐藏的私人信息项
+  const hideInSecret = [
+    '#infoSecQqInfo','#infoSecWechatInfo','#infoSecPhone','#infoSecEmail','#infoSecXiaohongshu'
+  ];
+
+  let boomCount = 0;
+  let isSecret = false;
+
+  // 原始信息
+  const orig = {
+    name: "灰冰",
+    title: "小学生",
+    desc: "Hello大家好我是灰冰👋是入圈了半年的福瑞，是一名香港六年级小学生，也是会偶尔抱怨的小学生，偶尔会社恐，偶尔也会社牛，此外还有拥有自己的兽装",
+    skill: "玩抽象 / 低情商 / 会复仇",
+    sns: "微信、抖音、快手、b站、小红书、qq"
+  };
+
+  // 副简介
+  const secret = {
+    name: "🔞灰冰",
+    title: "",
+    desc: "嗨，我是🔞🈲的灰冰。可能是我心理出现了一点扭曲，所以你也不用听，你只要看简介就对了——呵呵呵，我是🔞禁的灰冰👄，就是小型兽聚民宿的。晚上要是有小兽太和我共用一张床的话，我会使用神秘服务🈲🅰️🅾️🅰️嘿嘿嘿~⚠︎",
+    skill: " 免费服务 / 晚上热床 / 帮你导 ",
+    sns: "推特"
+  };
+
+  easterBtn.addEventListener('click', () => {
+    boomEaster.style.display = 'block';
+    setTimeout(() => {
+      boomEaster.style.display = 'none';
+    }, 800);
+
+    boomCount++;
+
+    if (boomCount >= 5) {
+      boomCount = 0;
+      isSecret = !isSecret;
+      logPanel.style.display = 'none';
+
+      loader.style.display = 'flex';
+      document.querySelector('.loading-text').innerText = "正在切换隐藏简介...";
+
+      setTimeout(() => {
+        loader.style.display = 'none';
+
+        if (isSecret) {
+          // 副简介：暗红色背景+浅红色文字
+          card.classList.add('secret-mode');
+          
+          nameEl.innerText = secret.name;
+          titleEl.innerText = secret.title;
+          infoDescEl.innerText = secret.desc;
+          infoSkillEl.innerText = secret.skill;
+          infoSnsEl.innerText = secret.sns;
+
+          // 隐藏QQ/微信/电话/邮箱/小红书
+          hideInSecret.forEach(sel => document.querySelector(sel).style.display = 'none');
+          
+          // 按钮控制
+          document.querySelectorAll('.btn:not(.log-btn):not(.twitter)').forEach(btn => btn.style.display = 'none');
+          twitterBtn.style.display = 'block';
+        } else {
+          // 主简介：恢复正常
+          card.classList.remove('secret-mode');
+          
+          nameEl.innerText = orig.name;
+          titleEl.innerText = orig.title;
+          infoDescEl.innerText = orig.desc;
+          infoSkillEl.innerText = orig.skill;
+          infoSnsEl.innerText = orig.sns;
+
+          // 恢复显示
+          hideInSecret.forEach(sel => document.querySelector(sel).style.display = 'block');
+          
+          // 按钮恢复
+          document.querySelectorAll('.btn:not(.twitter)').forEach(btn => btn.style.display = 'block');
+          twitterBtn.style.display = 'none';
+        }
+      }, 1500);
+    }
+  });
+</script>
+</body>
+</html>
