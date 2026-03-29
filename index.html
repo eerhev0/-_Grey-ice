@@ -16,7 +16,6 @@ body{
   body{background:#121212;color:#eee}
 }
 
-/* 加载遮罩 */
 #loader {
   position: fixed;
   top: 0;
@@ -34,7 +33,6 @@ body{
   #loader {background: #121212;}
 }
 
-/* 进度条 */
 .progress-bar {
   width: 80%;
   height: 6px;
@@ -57,7 +55,6 @@ body{
   100% {width: 100%;}
 }
 
-/* 加载文字 */
 .loading-text {
   font-size: 16px;
   color: #666;
@@ -67,7 +64,6 @@ body{
   .loading-text {color: #aaa;}
 }
 
-/* 加载完成弹窗 */
 #donePopup {
   background: #fff;
   padding: 20px 30px;
@@ -111,7 +107,6 @@ body{
   background: #0ea6e0;
 }
 
-/* 名片卡片 */
 .card {
   max-width: 600px;
   width: 100%;
@@ -133,7 +128,6 @@ body{
   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
-/* 副简介暗色模式样式 */
 .card.secret-mode {
   background: #3a0e0e;
   color: #ffb3b3;
@@ -145,7 +139,6 @@ body{
   color: #ffcccc;
 }
 
-/* 点击名字彩蛋样式 */
 .name {
   font-size: 36px;
   font-weight: bold;
@@ -181,20 +174,17 @@ body{
   font-size: 16px;
 }
 
-/* 弹跳动画 */
 @keyframes bounce {
   0%,20%,50%,80%,100% {transform: translateY(0);}
   40% {transform: translateY(-8px);}
   60% {transform: translateY(-4px);}
 }
 
-/* 闪烁动画 */
 @keyframes blink {
   0%,100% { opacity:1; }
   50% { opacity:0.7; }
 }
 
-/* 统一按钮样式 */
 .btn {
   margin-top: 16px;
   padding: 12px 24px;
@@ -211,7 +201,6 @@ body{
   text-decoration: none;
 }
 
-/* QQ按钮 蓝色 */
 .qq {
   background: #0066ff;
   animation: bounce 2s infinite, glow-blue 2s infinite alternate;
@@ -224,7 +213,6 @@ body{
   background: #0052cc;
 }
 
-/* 抖音按钮 黑红蓝 */
 .douyin {
   background: #000;
   color: #fff;
@@ -244,7 +232,6 @@ body{
   opacity: 0.9;
 }
 
-/* 快手按钮 橙色 */
 .kuaishou {
   background: #ff7800;
   animation: bounce 2s infinite 1s, glow-orange 2s infinite alternate 1s;
@@ -257,7 +244,6 @@ body{
   background: #e66a00;
 }
 
-/* 小红书按钮 红色 */
 .xiaohongshu {
   background: #ff2442;
   animation: bounce 2s infinite 0.9s, glow-red 2s infinite alternate 0.9s;
@@ -270,7 +256,6 @@ body{
   background: #e01f3a;
 }
 
-/* 微信按钮 绿色 */
 .wechat {
   background: #07c160;
   animation: bounce 2s infinite 0.7s, glow-green 2s infinite alternate 0.7s;
@@ -283,7 +268,6 @@ body{
   background: #06ad56;
 }
 
-/* 推特按钮 黑色+闪烁+弹跳 */
 .twitter {
   background: #000;
   color: #fff;
@@ -293,7 +277,6 @@ body{
   background: #222;
 }
 
-/* 日志按钮 四色渐变 */
 .log-btn {
   background: linear-gradient(90deg, #ffdd00, #ff3333, #33cc33, #3399ff);
   background-size: 400% 100%;
@@ -307,7 +290,6 @@ body{
   opacity: 0.9;
 }
 
-/* 日志面板 */
 #logPanel {
   position: fixed;
   top: 0;
@@ -360,7 +342,6 @@ body{
   font-weight: bold;
 }
 
-/* 日志右上角小彩蛋按钮 */
 #easterBtn {
   position: absolute;
   top: 12px;
@@ -382,7 +363,6 @@ body{
   opacity: 1;
 }
 
-/* 爆炸表情包弹窗 */
 #boomEaster {
   position: fixed;
   top: 50%;
@@ -399,7 +379,6 @@ body{
   100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }
 
-/* 微信弹窗 */
 #wechatModal {
   position: fixed;
   top: 0;
@@ -453,7 +432,6 @@ body{
   font-weight: bold;
 }
 
-/* 抱抱弹窗 */
 #hugTip {
   position: fixed;
   top: 50%;
@@ -474,7 +452,6 @@ body{
   #hugTip {background: #222; color: #ff9ecf;}
 }
 
-/* 冷却提示弹窗 */
 #cdTip {
   position: fixed;
   top: 50%;
@@ -494,11 +471,66 @@ body{
 @media(prefers-color-scheme:dark){
   #cdTip {background: #222; color: #ff6666;}
 }
+
+/* NFC弹窗样式 */
+#nfcModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.65);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999999;
+  padding: 20px;
+}
+.nfc-box {
+  background: #fff;
+  max-width: 380px;
+  width: 100%;
+  padding: 28px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+@media(prefers-color-scheme:dark){
+  .nfc-box {background: #1e1e1e; color: #fff;}
+}
+.nfc-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #e53e3e;
+}
+.nfc-desc {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+.nfc-pdd-btn {
+  background: #e53e3e;
+  animation: bounce 1.8s infinite, glow-red 1.5s infinite alternate;
+}
+.nfc-pdd-btn:hover {
+  background: #c53030;
+}
+.close-nfc {
+  margin-top: 12px;
+  padding: 9px 18px;
+  background: #e2e8f0;
+  color: #4a5568;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 14px;
+}
 </style>
 </head>
 <body>
 
-<!-- 加载 -->
 <div id="loader">
   <div class="progress-bar"><div class="progress-fill"></div></div>
   <div class="loading-text">正在加载灰冰的名片...</div>
@@ -509,7 +541,6 @@ body{
   </div>
 </div>
 
-<!-- 名片 -->
 <div class="card" id="card">
   <div class="name" id="nameClick">灰冰</div>
   <div class="title">小学生</div>
@@ -519,6 +550,12 @@ body{
     <div class="info" id="infoDesc">Hello大家好我是灰冰👋是入圈了半年的福瑞，是一名香港六年级小学生，也是会偶尔抱怨的小学生，偶尔会社恐，偶尔也会社牛，此外还有拥有自己的兽装</div>
   </div>
   
+  <!-- NFC入口 -->
+  <div class="item" id="infoSecNfc">
+    <div class="label">NFC商店来源</div>
+    <div class="info" style="color:#e53e3e;cursor:pointer" id="openNfc">点击查看 NFC 实现说明</div>
+  </div>
+
   <div class="item" id="infoSecSkill">
     <div class="label">技能</div>
     <div class="info" id="infoSkill">玩抽象 / 低情商 / 会复仇</div>
@@ -560,8 +597,7 @@ body{
   <a class="btn xiaohongshu" href="https://xhslink.com/m/5086Efv0jbU" target="_blank">📕 戳我看灰冰的小红书</a>
   <button class="btn wechat" id="wechatBtn">💬 查看灰冰微信号</button>
   
-  <!-- 推特按钮 仅副简介显示 -->
-  <a class="btn twitter" id="twitterBtn" href="https://x.com/ggcg281650" target="_blank" style="display:none;">🔗 前往灰冰的推特</a>
+  <a class="btn twitter" id="twitterBtn" href="https://x.com/ggcg281650" target="_blank" style="display:none;">㊙️前往灰冰的推特</a>
 
   <button class="btn log-btn" id="logBtn">📋 查看更新日志</button>
 </div>
@@ -592,174 +628,170 @@ body{
   </div>
 </div>
 
-<!-- 爆炸表情包 -->
-<div id="boomEaster">💥</div>
+<!-- NFC弹窗 -->
+<div id="nfcModal">
+  <div class="nfc-box">
+    <div class="nfc-title">NFC 使用说明</div>
+    <div class="nfc-desc">本NFC正在尝试，很简单，使用手机app里面的读写、写入和删除</div>
+    <a class="btn nfc-pdd-btn" href="https://mobile.yangkeduo.com/mall_page.html?ps=lx2qQgzDqZ" target="_blank">进入拼多多NFC店铺</a>
+    <button class="close-nfc" id="closeNfc">关闭</button>
+  </div>
+</div>
 
-<!-- 抱抱弹窗 -->
+<div id="boomEaster">💥</div>
 <div id="hugTip">🎉 灰冰的抱抱 ×1</div>
-<!-- 冷却提示 -->
 <div id="cdTip">🚫 不能连续点击哦</div>
 
 <script>
-  const startBtn = document.getElementById('startBtn');
-  const loader = document.getElementById('loader');
-  const card = document.getElementById('card');
+const startBtn = document.getElementById('startBtn');
+const loader = document.getElementById('loader');
+const card = document.getElementById('card');
 
-  startBtn.addEventListener('click', function() {
-    loader.style.display = 'none';
-    card.classList.add('show');
+startBtn.addEventListener('click', function() {
+  loader.style.display = 'none';
+  card.classList.add('show');
+});
+
+// 日志
+const logPanel = document.getElementById('logPanel');
+const logBtn = document.getElementById('logBtn');
+const closeLog = document.querySelector('.close-log');
+
+document.addEventListener('keydown', (e) => {
+  if(e.key.toLowerCase() === 'l') logPanel.style.display = 'flex';
+  if(e.key === 'Escape') logPanel.style.display = 'none';
+});
+
+logBtn.onclick = () => logPanel.style.display = 'flex';
+closeLog.onclick = () => logPanel.style.display = 'none';
+logPanel.onclick = (e) => {
+  if(e.target === logPanel) logPanel.style.display = 'none';
+};
+
+// 微信
+const wechatBtn = document.getElementById('wechatBtn');
+const wechatModal = document.getElementById('wechatModal');
+const closeWechat = document.getElementById('closeWechat');
+const copyBtn = document.getElementById('copyBtn');
+const wxId = document.getElementById('wxId').innerText;
+
+wechatBtn.onclick = () => wechatModal.style.display = 'flex';
+closeWechat.onclick = () => wechatModal.style.display = 'none';
+wechatModal.onclick = (e) => {
+  if(e.target === wechatModal) wechatModal.style.display = 'none';
+};
+copyBtn.onclick = () => {
+  navigator.clipboard.writeText(wxId).then(() => {
+    alert('复制成功！快去微信添加我吧～');
   });
+};
 
-  // 日志
-  const logPanel = document.getElementById('logPanel');
-  const logBtn = document.getElementById('logBtn');
-  const closeLog = document.querySelector('.close-log');
+// 抱抱
+const nameClick = document.getElementById('nameClick');
+const hugTip = document.getElementById('hugTip');
+const cdTip = document.getElementById('cdTip');
+let hugCount = 0;
+let lastClick = 0;
+const CD = 50;
 
-  document.addEventListener('keydown', (e) => {
-    if(e.key.toLowerCase() === 'l') logPanel.style.display = 'flex';
-    if(e.key === 'Escape') logPanel.style.display = 'none';
-  });
+nameClick.addEventListener('click', () => {
+  const now = Date.now();
+  if (now - lastClick < CD) {
+    cdTip.style.display = 'block';
+    setTimeout(() => cdTip.style.display = 'none', 1000);
+    return;
+  }
+  lastClick = now;
+  hugCount++;
+  hugTip.textContent = `🎉 灰冰的抱抱 ×${hugCount}`;
+  hugTip.style.display = 'block';
+  setTimeout(() => hugTip.style.display = 'none', 1200);
+});
 
-  logBtn.onclick = () => logPanel.style.display = 'flex';
-  closeLog.onclick = () => logPanel.style.display = 'none';
-  logPanel.onclick = (e) => {
-    if(e.target === logPanel) logPanel.style.display = 'none';
-  };
+// NFC弹窗
+const openNfc = document.getElementById('openNfc');
+const nfcModal = document.getElementById('nfcModal');
+const closeNfc = document.getElementById('closeNfc');
 
-  // 微信弹窗 + 复制
-  const wechatBtn = document.getElementById('wechatBtn');
-  const wechatModal = document.getElementById('wechatModal');
-  const closeWechat = document.getElementById('closeWechat');
-  const copyBtn = document.getElementById('copyBtn');
-  const wxId = document.getElementById('wxId').innerText;
+openNfc.onclick = () => nfcModal.style.display = 'flex';
+closeNfc.onclick = () => nfcModal.style.display = 'none';
+nfcModal.onclick = (e) => {
+  if(e.target === nfcModal) nfcModal.style.display = 'none';
+};
 
-  wechatBtn.onclick = () => wechatModal.style.display = 'flex';
-  closeWechat.onclick = () => wechatModal.style.display = 'none';
-  wechatModal.onclick = (e) => {
-    if(e.target === wechatModal) wechatModal.style.display = 'none';
-  };
+// 彩蛋切换
+const easterBtn = document.getElementById('easterBtn');
+const boomEaster = document.getElementById('boomEaster');
+const nameEl = document.getElementById('nameClick');
+const titleEl = document.querySelector('.title');
+const infoDescEl = document.getElementById('infoDesc');
+const infoSkillEl = document.getElementById('infoSkill');
+const infoSnsEl = document.getElementById('infoSns');
+const twitterBtn = document.getElementById('twitterBtn');
 
-  copyBtn.onclick = () => {
-    navigator.clipboard.writeText(wxId).then(() => {
-      alert('复制成功！快去微信添加我吧～');
-    });
-  };
+const hideInSecret = [
+  '#infoSecQqInfo','#infoSecWechatInfo','#infoSecPhone','#infoSecEmail','#infoSecXiaohongshu'
+];
 
-  // 抱抱连击
-  const nameClick = document.getElementById('nameClick');
-  const hugTip = document.getElementById('hugTip');
-  const cdTip = document.getElementById('cdTip');
-  
-  let hugCount = 0;
-  let lastClick = 0;
-  const CD = 50;
+let boomCount = 0;
+let isSecret = false;
 
-  nameClick.addEventListener('click', () => {
-    const now = Date.now();
-    if (now - lastClick < CD) {
-      cdTip.style.display = 'block';
-      setTimeout(() => cdTip.style.display = 'none', 1000);
-      return;
-    }
-    lastClick = now;
-    hugCount++;
-    hugTip.textContent = `🎉 灰冰的抱抱 ×${hugCount}`;
-    hugTip.style.display = 'block';
-    setTimeout(() => hugTip.style.display = 'none', 1200);
-  });
+const orig = {
+  name: "灰冰",
+  title: "小学生",
+  desc: "Hello大家好我是灰冰👋是入圈了半年的福瑞，是一名香港六年级小学生，也是会偶尔抱怨的小学生，偶尔会社恐，偶尔也会社牛，此外还有拥有自己的兽装",
+  skill: "玩抽象 / 低情商 / 会复仇",
+  sns: "微信、抖音、快手、b站、小红书、qq"
+};
 
-  // ========== 5次爆炸 → 重新加载 → 切换副简介 ==========
-  const easterBtn = document.getElementById('easterBtn');
-  const boomEaster = document.getElementById('boomEaster');
-  const nameEl = document.getElementById('nameClick');
-  const titleEl = document.querySelector('.title');
-  
-  const infoDescEl = document.getElementById('infoDesc');
-  const infoSkillEl = document.getElementById('infoSkill');
-  const infoSnsEl = document.getElementById('infoSns');
-  const twitterBtn = document.getElementById('twitterBtn');
+const secret = {
+  name: "灰冰???",
+  title: "小变态",
+  desc: "嗨，我是🔞🈲的灰冰。可能是我心理出现了一点扭曲，所以你也不用听，你只要看简介就对了——呵呵呵，我是🔞禁的灰冰👄，就是小型兽聚民宿的。晚上要是有小兽太和我共用一张床的话，我会使用神秘服务🈲🅰️🅾️🅰️嘿嘿嘿~⚠︎ ",
+  skill: "免费服务 / 帮你热床 / 帮你导 ",
+  sns: "推特"
+};
 
-  // 需要隐藏的私人信息项
-  const hideInSecret = [
-    '#infoSecQqInfo','#infoSecWechatInfo','#infoSecPhone','#infoSecEmail','#infoSecXiaohongshu'
-  ];
+easterBtn.addEventListener('click', () => {
+  boomEaster.style.display = 'block';
+  setTimeout(() => {
+    boomEaster.style.display = 'none';
+  }, 800);
 
-  let boomCount = 0;
-  let isSecret = false;
+  boomCount++;
+  if (boomCount >= 5) {
+    boomCount = 0;
+    isSecret = !isSecret;
+    logPanel.style.display = 'none';
+    loader.style.display = 'flex';
+    document.querySelector('.loading-text').innerText = "正在切换隐藏简介...";
 
-  // 原始信息
-  const orig = {
-    name: "灰冰",
-    title: "小学生",
-    desc: "Hello大家好我是灰冰👋是入圈了半年的福瑞，是一名香港六年级小学生，也是会偶尔抱怨的小学生，偶尔会社恐，偶尔也会社牛，此外还有拥有自己的兽装",
-    skill: "玩抽象 / 低情商 / 会复仇",
-    sns: "微信、抖音、快手、b站、小红书、qq"
-  };
-
-  // 副简介
-  const secret = {
-    name: "🔞灰冰",
-    title: "",
-    desc: "嗨，我是🔞🈲的灰冰。可能是我心理出现了一点扭曲，所以你也不用听，你只要看简介就对了——呵呵呵，我是🔞禁的灰冰👄，就是小型兽聚民宿的。晚上要是有小兽太和我共用一张床的话，我会使用神秘服务🈲🅰️🅾️🅰️嘿嘿嘿~⚠︎",
-    skill: " 免费服务 / 晚上热床 / 帮你导 ",
-    sns: "推特"
-  };
-
-  easterBtn.addEventListener('click', () => {
-    boomEaster.style.display = 'block';
     setTimeout(() => {
-      boomEaster.style.display = 'none';
-    }, 800);
-
-    boomCount++;
-
-    if (boomCount >= 5) {
-      boomCount = 0;
-      isSecret = !isSecret;
-      logPanel.style.display = 'none';
-
-      loader.style.display = 'flex';
-      document.querySelector('.loading-text').innerText = "正在切换隐藏简介...";
-
-      setTimeout(() => {
-        loader.style.display = 'none';
-
-        if (isSecret) {
-          // 副简介：暗红色背景+浅红色文字
-          card.classList.add('secret-mode');
-          
-          nameEl.innerText = secret.name;
-          titleEl.innerText = secret.title;
-          infoDescEl.innerText = secret.desc;
-          infoSkillEl.innerText = secret.skill;
-          infoSnsEl.innerText = secret.sns;
-
-          // 隐藏QQ/微信/电话/邮箱/小红书
-          hideInSecret.forEach(sel => document.querySelector(sel).style.display = 'none');
-          
-          // 按钮控制
-          document.querySelectorAll('.btn:not(.log-btn):not(.twitter)').forEach(btn => btn.style.display = 'none');
-          twitterBtn.style.display = 'block';
-        } else {
-          // 主简介：恢复正常
-          card.classList.remove('secret-mode');
-          
-          nameEl.innerText = orig.name;
-          titleEl.innerText = orig.title;
-          infoDescEl.innerText = orig.desc;
-          infoSkillEl.innerText = orig.skill;
-          infoSnsEl.innerText = orig.sns;
-
-          // 恢复显示
-          hideInSecret.forEach(sel => document.querySelector(sel).style.display = 'block');
-          
-          // 按钮恢复
-          document.querySelectorAll('.btn:not(.twitter)').forEach(btn => btn.style.display = 'block');
-          twitterBtn.style.display = 'none';
-        }
-      }, 1500);
-    }
-  });
+      loader.style.display = 'none';
+      if (isSecret) {
+        card.classList.add('secret-mode');
+        nameEl.innerText = secret.name;
+        titleEl.innerText = secret.title;
+        infoDescEl.innerText = secret.desc;
+        infoSkillEl.innerText = secret.skill;
+        infoSnsEl.innerText = secret.sns;
+        hideInSecret.forEach(sel => document.querySelector(sel).style.display = 'none');
+        document.querySelectorAll('.btn:not(.log-btn):not(.twitter)').forEach(btn => btn.style.display = 'none');
+        twitterBtn.style.display = 'block';
+      } else {
+        card.classList.remove('secret-mode');
+        nameEl.innerText = orig.name;
+        titleEl.innerText = orig.title;
+        infoDescEl.innerText = orig.desc;
+        infoSkillEl.innerText = orig.skill;
+        infoSnsEl.innerText = orig.sns;
+        hideInSecret.forEach(sel => document.querySelector(sel).style.display = 'block');
+        document.querySelectorAll('.btn:not(.twitter)').forEach(btn => btn.style.display = 'block');
+        twitterBtn.style.display = 'none';
+      }
+    }, 1500);
+  }
+});
 </script>
 </body>
 </html>
