@@ -13,8 +13,38 @@ body{
   min-height:100vh;
 }
 @media(prefers-color-scheme:dark){
-  body{background:#121212;color:#eee}
+  body{background:#121118;color:#eee}
 }
+
+/* 左上角三个圆形语言按钮 */
+.lang-switch {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 99999;
+  display: flex;
+  gap: 10px;
+}
+.lang-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+.lang-btn:hover {
+  transform: scale(1.1);
+}
+.btn-cn { background: #2563eb; }
+.lang-btn.active { box-shadow: 0 0 0 2px #fff, 0 0 10px #2563eb; }
+.btn-tw { background: #10b981; }
+.btn-en { background: #f59e0b; }
 
 #loader {
   position: fixed;
@@ -30,14 +60,14 @@ body{
   z-index: 9999;
 }
 @media(prefers-color-scheme:dark){
-  #loader {background: #121212;}
+  #loader {background: #121118;}
 }
 
 .progress-bar {
   width: 80%;
-  height: 6px;
+  height: 8px;
   background: #e0e0e0;
-  border-radius: 3px;
+  border-radius: 4px;
   overflow: hidden;
   margin-bottom: 20px;
 }
@@ -47,12 +77,19 @@ body{
 .progress-fill {
   height: 100%;
   width: 0;
-  background: #12b7f5;
-  animation: loadProgress 1.5s ease-out forwards;
+  background: linear-gradient(90deg, #ff0000, #ff9900, #ffff00, #33ff00, #0099ff, #6633ff);
+  background-size: 400% 100%;
+  animation: 
+    loadProgress 1.5s ease-out forwards,
+    gradientLoop 3s linear infinite;
 }
 @keyframes loadProgress {
   0% {width: 0;}
   100% {width: 100%;}
+}
+@keyframes gradientLoop {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 400% 50%; }
 }
 
 .loading-text {
@@ -68,14 +105,14 @@ body{
   background: #fff;
   padding: 20px 30px;
   border-radius: 12px;
-  box-shadow: 0 5px 20 rgba(0,0,0,0.15);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
   text-align: center;
   opacity: 0;
   transform: translateY(-20px);
   animation: showPopup 0.5s ease-out 1.5s forwards;
 }
 @media(prefers-color-scheme:dark){
-  #donePopup {background: #1e1e1e; color: #fff;}
+  #donePopup {background: #1e1e2f; color: #fff;}
 }
 @keyframes showPopup {
   to {opacity: 1; transform: translateY(0);}
@@ -93,9 +130,10 @@ body{
 @media(prefers-color-scheme:dark){
   .done-desc {color: #aaa;}
 }
+
 #startBtn {
   padding: 10px 20px;
-  background: #12b7f5;
+  background: #07c160;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -104,7 +142,48 @@ body{
   transition: background 0.3s;
 }
 #startBtn:hover {
-  background: #0ea6e0;
+  background: #06ad56;
+}
+
+#wifiSignal {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  opacity: 0;
+  z-index: 10000;
+  animation: wifiShow 0.5s ease-out 1.5s forwards;
+}
+.wifi-bar {
+  background: #07c160;
+  border-radius: 2px 2px 0 0;
+  width: 4px;
+  transform: scaleY(0);
+}
+.wifi-bar:nth-child(1) {
+  height: 8px;
+  animation: wifiGrow 0.3s ease-out 1.6s forwards;
+}
+.wifi-bar:nth-child(2) {
+  height: 12px;
+  animation: wifiGrow 0.3s ease-out 1.7s forwards;
+}
+.wifi-bar:nth-child(3) {
+  height: 16px;
+  animation: wifiGrow 0.3s ease-out 1.8s forwards;
+}
+.wifi-bar:nth-child(4) {
+  height: 20px;
+  animation: wifiGrow 0.3s ease-out 1.9s forwards;
+}
+@keyframes wifiShow {
+  to {opacity: 1;}
+}
+@keyframes wifiGrow {
+  from {transform: scaleY(0);}
+  to {transform: scaleY(1);}
 }
 
 .card {
@@ -129,7 +208,7 @@ body{
 }
 
 .card.secret-mode {
-  background: #3a0e0e;
+  background: #3a1018;
   color: #ffb3b3;
 }
 .card.secret-mode .label {
@@ -140,22 +219,45 @@ body{
 }
 
 .name {
-  font-size: 36px;
+  font-size: 42px;
   font-weight: bold;
   margin-bottom: 8px;
   cursor: pointer;
-  transition: transform 0.2s;
+  background: linear-gradient(90deg, #4f46e5, #06b6d4, #8b5cf6, #ec4899);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(129, 140, 248, 0.5), 0 0 20px rgba(129, 140, 248, 0.3);
+  background-size: 300% 100%;
+  animation: nameFlow 6s linear infinite;
+  position: relative;
+  display: inline-block;
+}
+@keyframes nameFlow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+.name::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #4f46e5, #06b6d4, #8b5cf6);
+  border-radius: 3px;
 }
 .name:hover {
   transform: scale(1.05);
 }
+
 .title {
   color: #666;
   margin-bottom: 24px;
   font-size: 20px;
 }
 @media(prefers-color-scheme:dark){
-  .title {color: #aaa;}
+  .title {color: #ddd;}
 }
 .item {
   margin: 16px 0;
@@ -174,12 +276,47 @@ body{
   font-size: 16px;
 }
 
+.intro-box {
+  background: linear-gradient(135deg, #fffdee 0%, #fff8e8 100%);
+  border: 1px solid #ffd700;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 14px 0;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.1);
+}
+@media(prefers-color-scheme:dark) {
+  .intro-box {
+    background: linear-gradient(135deg, #221f10 0%, #1c1a10 100%);
+    border-color: #ccaa00;
+  }
+}
+.intro-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #cc8800;
+  margin-bottom: 8px;
+}
+@media(prefers-color-scheme:dark) {
+  .intro-title { color: #ffdd55; }
+}
+.intro-text {
+  line-height: 1.7;
+  font-size: 15px;
+  color: #333;
+}
+@media(prefers-color-scheme:dark) {
+  .intro-text { color: #eee; }
+}
+
 @keyframes bounce {
   0%,20%,50%,80%,100% {transform: translateY(0);}
   40% {transform: translateY(-8px);}
   60% {transform: translateY(-4px);}
 }
-
 @keyframes blink {
   0%,100% { opacity:1; }
   50% { opacity:0.7; }
@@ -201,383 +338,125 @@ body{
   text-decoration: none;
 }
 
-.qq {
-  background: #0066ff;
-  animation: bounce 2s infinite, glow-blue 2s infinite alternate;
-}
-@keyframes glow-blue {
-  from {box-shadow: 0 0 5px #0066ff;}
-  to {box-shadow: 0 0 15px #0066ff;}
-}
-.qq:hover {
-  background: #0052cc;
-}
+.qq { background: #0066ff; animation: bounce 2s infinite, glow-blue 2s infinite alternate; }
+@keyframes glow-blue { from {box-shadow:0 0 5px #0066ff;} to {box-shadow:0 0 15px #0066ff;} }
+.qq:hover { background: #0052cc; }
 
-.douyin {
-  background: #000;
-  color: #fff;
-  position: relative;
-  overflow: hidden;
-  animation: bounce 2s infinite 0.5s;
-}
-.douyin::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(45deg, #fe2c55, #25f4ee);
-  opacity: 0.9;
-  z-index: -1;
-}
-.douyin:hover {
-  opacity: 0.9;
-}
+.douyin { background: #000; color: #fff; position: relative; overflow: hidden; animation: bounce 2s infinite 0.5s; }
+.douyin::before { content:''; position:absolute; inset:0; background:linear-gradient(45deg,#fe2c55,#25f4ee); opacity:0.9; z-index:-1; }
 
-.kuaishou {
-  background: #ff7800;
-  animation: bounce 2s infinite 1s, glow-orange 2s infinite alternate 1s;
-}
-@keyframes glow-orange {
-  from {box-shadow: 0 0 5px #ff7800;}
-  to {box-shadow: 0 0 15px #ff7800;}
-}
-.kuaishou:hover {
-  background: #e66a00;
-}
+.kuaishou { background: #ff7800; animation: bounce 2s infinite 1s, glow-orange 2s infinite alternate; }
+@keyframes glow-orange { from {box-shadow:0 0 5px #ff7800;} to {box-shadow:0 0 15px #ff7800;} }
+.kuaishou:hover { background: #e66a00; }
 
-.xiaohongshu {
-  background: #ff2442;
-  animation: bounce 2s infinite 0.9s, glow-red 2s infinite alternate 0.9s;
-}
-@keyframes glow-red {
-  from {box-shadow: 0 0 5px #ff2442;}
-  to {box-shadow: 0 0 15px #ff2442;}
-}
-.xiaohongshu:hover {
-  background: #e01f3a;
-}
+.xiaohongshu { background: #ff2442; animation: bounce 2s infinite 0.9s, glow-red 2s infinite alternate; }
+@keyframes glow-red { from {box-shadow:0 0 5px #ff2442;} to {box-shadow:0 0 15px #ff2442;} }
+.xiaohongshu:hover { background: #e01f3a; }
 
-.wechat {
-  background: #07c160;
-  animation: bounce 2s infinite 0.7s, glow-green 2s infinite alternate 0.7s;
-}
-@keyframes glow-green {
-  from {box-shadow: 0 0 5px #07c160;}
-  to {box-shadow: 0 0 15px #07c160;}
-}
-.wechat:hover {
-  background: #06ad56;
-}
+.wechat { background: #07c160; animation: bounce 2s infinite 0.7s, glow-green 2s infinite alternate; }
+@keyframes glow-green { from {box-shadow:0 0 5px #07c160;} to {box-shadow:0 0 15px #07c160;} }
+.wechat:hover { background: #06ad56; }
 
-.twitter {
-  background: #000;
-  color: #fff;
-  animation: bounce 2s infinite, blink 1.2s infinite;
-}
-.twitter:hover {
-  background: #222;
-}
+.twitter { background: #000; color: #fff; animation: bounce 2s infinite, blink 1.2s infinite; }
+.twitter:hover { background: #222; }
 
-/* 新增兽频道按钮样式 */
-.fursuit {
-  background: #ffd700;
-  color: #000;
-  animation: bounce 2s infinite 1.1s, glow-yellow 2s infinite alternate 1.1s;
-}
-@keyframes glow-yellow {
-  from {box-shadow: 0 0 5px #ffd700;}
-  to {box-shadow: 0 0 15px #ffd700;}
-}
-.fursuit:hover {
-  background: #e6c200;
-}
+.fursuit { background: #ffd700; color: #000; animation: bounce 2s infinite 1.1s, glow-yellow 2s infinite alternate; }
+@keyframes glow-yellow { from {box-shadow:0 0 5px #ffd700;} to {box-shadow:0 0 15px #ffd700;} }
+.fursuit:hover { background: #e6c200; }
 
 .log-btn {
   background: linear-gradient(90deg, #ffdd00, #ff3333, #33cc33, #3399ff);
   background-size: 400% 100%;
   animation: colorMove 6s linear infinite, bounce 2s infinite 1.2s;
 }
-@keyframes colorMove {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
-}
-.log-btn:hover {
-  opacity: 0.9;
-}
+@keyframes colorMove { 0%{background-position:0% 50%;}100%{background-position:400% 50%;} }
 
-#logPanel {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 99999;
-  padding: 20px;
-}
-.log-box {
-  background: #fff;
-  max-width: 600px;
-  width: 100%;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30 rgba(0,0,0,0.3);
-  max-height: 80vh;
-  overflow-y: auto;
-  position: relative;
-}
-@media(prefers-color-scheme:dark){
-  .log-box {background: #1e1e1e; color: #fff;}
-}
-.log-box h2 {
-  margin-bottom: 20px;
-}
-.log-box h3 {
-  margin: 16px 0 8px;
-}
-.log-box p, .log-box li {
-  line-height: 1.6;
-  margin-bottom: 6px;
-}
-.log-box ul {
-  padding-left: 20px;
-}
-.close-log {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background: #0066ff;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-  font-weight: bold;
-}
+#logPanel { position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; justify-content:center; align-items:center; z-index:99999; padding:20px; }
+.log-box { background:#fff; max-width:600px; width:100%; padding:30px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.3); max-height:80vh; overflow-y:auto; position:relative; }
+@media(prefers-color-scheme:dark){ .log-box{background:#1e1e2f;color:#fff;} }
+.close-log { margin-top:20px; padding:10px 20px; background:#0066ff; color:#fff; border:none; border-radius:8px; cursor:pointer; width:100%; font-weight:bold; }
 
-#easterBtn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: #666;
-  color: #fff;
-  border: none;
-  font-size: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.6;
-}
-#easterBtn:hover {
-  opacity: 1;
-}
+#easterBtn { position:absolute; top:12px; right:12px; width:26px; height:26px; border-radius:50%; background:#666; color:#fff; border:none; font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:.6; }
+#easterBtn:hover { opacity:1; }
 
-#boomEaster {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 80px;
-  z-index: 9999999;
-  display: none;
-  animation: boomPop 0.6s ease-out forwards;
-}
-@keyframes boomPop {
-  0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-  60% { transform: translate(-50%, -50%) scale(1.2); }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-}
+#boomEaster { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); font-size:80px; z-index:9999999; display:none; animation:boomPop .6s ease-out forwards; }
+@keyframes boomPop { 0%{transform:translate(-50%,-50%) scale(0);opacity:1;}60%{transform:translate(-50%,-50%) scale(1.2);}100%{transform:translate(-50%,-50%) scale(1);opacity:1;} }
 
-#wechatModal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
-  padding: 20px;
-}
-.wechat-card {
-  background: #fff;
-  max-width: 320px;
-  width: 100%;
-  padding: 25px;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-@media(prefers-color-scheme:dark){
-  .wechat-card {background: #1e1e1e; color: #fff;}
-}
-.wx-id {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 15px 0;
-  color: #07c160;
-}
-.copy-btn {
-  padding: 10px 20px;
-  background: #07c160;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-.close-wechat {
-  padding: 10px 20px;
-  background: #ccc;
-  color: #333;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-  font-weight: bold;
-}
+#wechatModal { position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; justify-content:center; align-items:center; z-index:999999; padding:20px; }
+.wechat-card { background:#fff; max-width:320px; width:100%; padding:25px; border-radius:16px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,.3); }
+@media(prefers-color-scheme:dark){ .wechat-card{background:#1e1e2f;color:#fff;} }
+.wx-id { font-size:18px; font-weight:bold; margin:15px 0; color:#07c160; }
+.copy-btn { padding:10px 20px; background:#07c160; color:#fff; border:none; border-radius:8px; cursor:pointer; width:100%; font-weight:bold; margin-bottom:10px; }
+.close-wechat { padding:10px 20px; background:#ccc; color:#333; border:none; border-radius:8px; cursor:pointer; width:100%; font-weight:bold; }
 
-#hugTip {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  padding: 30px 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 40 rgba(0,0,0,0.2);
-  font-size: 20px;
-  font-weight: bold;
-  color: #ff69b4;
-  display: none;
-  z-index: 999999;
-  white-space: nowrap;
-}
-@media(prefers-color-scheme:dark){
-  #hugTip {background: #222; color: #ff9ecf;}
-}
+#hugTip { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; padding:30px 40px; border-radius:20px; box-shadow:0 10px 40px rgba(0,0,0,.2); font-size:20px; font-weight:bold; color:#ff69b4; display:none; z-index:999999; white-space:nowrap; }
+@media(prefers-color-scheme:dark){ #hugTip{background:#222;color:#ff9ecf;} }
 
-#cdTip {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  padding: 30px 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 40 rgba(0,0,0,0.2);
-  font-size: 20px;
-  font-weight: bold;
-  color: #ff4444;
-  display: none;
-  z-index: 999999;
-  white-space: nowrap;
-}
-@media(prefers-color-scheme:dark){
-  #cdTip {background: #222; color: #ff6666;}
-}
+#cdTip { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; padding:30px 40px; border-radius:20px; box-shadow:0 10px 40px rgba(0,0,0,.2); font-size:20px; font-weight:bold; color:#ff4444; display:none; z-index:999999; white-space:nowrap; }
+@media(prefers-color-scheme:dark){ #cdTip{background:#222;color:#ff6666;} }
 
-/* NFC弹窗样式 */
-#nfcModal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.65);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999999;
-  padding: 20px;
-}
-.nfc-box {
-  background: #fff;
-  max-width: 380px;
-  width: 100%;
-  padding: 28px;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-@media(prefers-color-scheme:dark){
-  .nfc-box {background: #1e1e1e; color: #fff;}
-}
-.nfc-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 16px;
-  color: #e53e3e;
-}
-.nfc-desc {
-  font-size: 15px;
-  line-height: 1.6;
-  margin-bottom: 22px;
-}
-.nfc-pdd-btn {
-  background: #e53e3e;
-  animation: bounce 1.8s infinite, glow-red 1.5s infinite alternate;
-}
-.nfc-pdd-btn:hover {
-  background: #c53030;
-}
-.close-nfc {
-  margin-top: 12px;
-  padding: 9px 18px;
-  background: #e2e8f0;
-  color: #4a5568;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-  font-size: 14px;
-}
+#nfcModal { position:fixed; inset:0; background:rgba(0,0,0,.65); display:none; justify-content:center; align-items:center; z-index:9999999; padding:20px; }
+.nfc-box { background:#fff; max-width:380px; width:100%; padding:28px; border-radius:16px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,.3); }
+@media(prefers-color-scheme:dark){ .nfc-box{background:#1e1e2f;color:#fff;} }
+.nfc-title { font-size:18px; font-weight:bold; margin-bottom:16px; color:#e53e3e; }
+.nfc-desc { font-size:15px; line-height:1.6; margin-bottom:22px; }
+.nfc-pdd-btn { background:#e53e3e; animation:bounce 1.8s infinite, glow-red 1.5s infinite alternate; }
+.close-nfc { margin-top:12px; padding:9px 18px; background:#e2e8f0; color:#4a5568; border:none; border-radius:8px; cursor:pointer; width:100%; font-size:14px; }
 </style>
 </head>
 <body>
 
+<!-- 三个圆形语言按钮 -->
+<div class="lang-switch">
+  <button class="lang-btn btn-cn active" id="btnCN">简</button>
+  <button class="lang-btn btn-tw" id="btnTW">繁</button>
+  <button class="lang-btn btn-en" id="btnEN">EN</button>
+</div>
+
+<div id="wifiSignal">
+  <div class="wifi-bar"></div>
+  <div class="wifi-bar"></div>
+  <div class="wifi-bar"></div>
+  <div class="wifi-bar"></div>
+</div>
+
 <div id="loader">
   <div class="progress-bar"><div class="progress-fill"></div></div>
-  <div class="loading-text">正在加载灰冰的名片...</div>
+  <div class="loading-text">正在加载...</div>
   <div id="donePopup">
-    <div class="done-title">加载完毕！</div>
-    <div class="done-desc">欢迎来到灰冰的名片网站</div>
-    <button id="startBtn">开始浏览</button>
+    <div class="done-title">加载完成！</div>
+    <div class="done-desc">欢迎来到灰冰的个人主页</div>
+    <button id="startBtn">进入</button>
   </div>
 </div>
 
 <div class="card" id="card">
   <div class="name" id="nameClick">灰冰</div>
-  <div class="title">小学生</div>
+  <div class="title" id="roleText">小学生</div>
 
   <div class="item" id="infoSecIntro">
-    <div class="label">简介</div>
-    <div class="info" id="infoDesc">Hello大家好我是灰冰👋是入圈了半年的福瑞，是一名香港六年级小学生，也是会偶尔抱怨的小学生，偶尔会社恐，偶尔也会社牛，此外还有拥有自己的兽装</div>
+    <div class="label" id="aboutLabel">自我介绍</div>
+    <div class="intro-box">
+      <div class="intro-title" id="introHead">✨ 关于灰冰</div>
+      <div class="intro-text" id="infoDesc">
+        大家好，我是灰冰。入圈半年的福瑞，香港六年级小学生。有时社恐有时社牛，有自己的兽装。
+      </div>
+    </div>
   </div>
-  
-  <!-- NFC入口 -->
+
   <div class="item" id="infoSecNfc">
-    <div class="label">NFC商店来源</div>
-    <div class="info" style="color:#e53e3e;cursor:pointer" id="openNfc">点击查看 NFC 实现说明</div>
+    <div class="label" id="nfcLabel">NFC商店来源</div>
+    <div class="info" style="color:#e53e3e;cursor:pointer" id="openNfc">查看 NFC 使用说明</div>
   </div>
 
   <div class="item" id="infoSecSkill">
-    <div class="label">技能</div>
+    <div class="label" id="skillLabel">技能</div>
     <div class="info" id="infoSkill">玩抽象 / 低情商 / 会复仇</div>
   </div>
 
   <div class="item" id="infoSecXiaohongshu">
     <div class="label">小红书</div>
-    <div class="info">号：95118212301 | 获赞与收藏：25</div>
+    <div class="info">ID: 95118212301 | 获赞: 25</div>
   </div>
 
   <div class="item" id="infoSecPhone">
@@ -601,97 +480,269 @@ body{
   </div>
 
   <div class="item" id="infoSecSns">
-    <div class="label">社交媒体</div>
-    <div class="info" id="infoSns">微信、抖音、快手、b站、小红书、qq</div>
+    <div class="label" id="snsLabel">社交媒体</div>
+    <div class="info" id="infoSns">微信、抖音、快手、B站、小红书、QQ</div>
   </div>
 
-  <a class="btn qq" href="https://qm.qq.com/q/wEnQhLHW1w" target="_blank">🐾 戳我加灰冰为QQ好友</a>
-  <a class="btn douyin" href="https://v.douyin.com/Otl2speIq08/" target="_blank">🎬 戳我看灰冰的抖音主页</a>
-  <a class="btn kuaishou" href="https://v.kuaishou.com/Jb6WKtca" target="_blank">🎥 戳戳快看灰冰快手主页</a>
-  <a class="btn xiaohongshu" href="https://xhslink.com/m/5086Efv0jbU" target="_blank">📕 戳我看灰冰的小红书</a>
-  <button class="btn wechat" id="wechatBtn">💬 查看灰冰微信号</button>
-  <!-- 新增兽频道按钮 -->
-  <a class="btn fursuit" href="https://fursuit.tv/@eerhev0" target="_blank">📺 快看兽频道</a>
-  
-  <a class="btn twitter" id="twitterBtn" href="https://x.com/ggcg281650" target="_blank" style="display:none;">🔗 前往灰冰的推特</a>
+  <a class="btn qq" href="https://qm.qq.com/q/wEnQhLHW1w" target="_blank">🐾 加我QQ</a>
+  <a class="btn douyin" href="https://v.douyin.com/Otl2speIq08/" target="_blank">🎬 我的抖音</a>
+  <a class="btn kuaishou" href="https://v.kuaishou.com/Jb6WKtca" target="_blank">🎥 我的快手</a>
+  <a class="btn xiaohongshu" href="https://xhslink.com/m/5086Efv0jbU" target="_blank">📕 我的小红书</a>
+  <button class="btn wechat" id="wechatBtn">💬 我的微信</button>
+  <a class="btn fursuit" href="https://fursuit.tv/@eerhev0" target="_blank">📺 兽装频道</a>
 
-  <button class="btn log-btn" id="logBtn">📋 查看更新日志</button>
+  <a class="btn twitter" id="twitterBtn" href="https://x.com/ggcg281650" target="_blank" style="display:none;">🔗 我的推特</a>
+
+  <button class="btn log-btn" id="logBtn">📋 日志</button>
 </div>
 
-<!-- 微信弹窗 -->
 <div id="wechatModal">
   <div class="wechat-card">
     <h3>添加我的微信</h3>
     <div class="wx-id" id="wxId">San823016803</div>
-    <button class="copy-btn" id="copyBtn">📋 一键复制微信号</button>
+    <button class="copy-btn" id="copyBtn">复制微信号</button>
     <button class="close-wechat" id="closeWechat">关闭</button>
   </div>
 </div>
 
-<!-- 日志面板 -->
 <div id="logPanel">
   <div class="log-box">
     <button id="easterBtn">!</button>
     <h2>📋 更新日志</h2>
-    <p><strong>版本：2.5 彩蛋版</strong><br>更新时间：2026年03月29日</p>
-    <h3>✅ 新增功能</h3>
+    <p><strong>Version: 3.1</strong><br>Date: 2026-04-04</p>
+    <h3>✅ 优化</h3>
     <ul>
-      <li>新增5次爆炸💥彩蛋：点击右上角「!」5次 → 加载 → 切换隐藏简介</li>
-      <li>隐藏简介新增推特按钮，带闪烁动画</li>
-      <li>隐藏黑暗简介🔞</li>
-      <li>新增📺快看兽频道按钮，黄色底色黑色字体，带浮动发光动画</li>
+      <li>副简介（彩蛋模式）隐藏NFC介绍</li>
+      <li>彻底修复副简介切换语言跳回主简介的bug</li>
+      <li>简繁英三语完整同步</li>
     </ul>
-    <button class="close-log">关闭日志</button>
+    <button class="close-log">关闭</button>
   </div>
 </div>
 
-<!-- NFC弹窗 -->
 <div id="nfcModal">
   <div class="nfc-box">
     <div class="nfc-title">NFC 使用说明</div>
-    <div class="nfc-desc">本NFC正在测试，很简单，使用手机app里面的读写、写入和删除</div>
-    <a class="btn nfc-pdd-btn" href="https://mobile.yangkeduo.com/mall_page.html?ps=lx2qQgzDqZ" target="_blank">进入拼多多店铺</a>
-    <button class="close-nfc" id="closeNfc">关💦</button>
+    <div class="nfc-desc">这个NFC为测试用途，使用手机APP进行读写、写入和删除。</div>
+    <a class="btn nfc-pdd-btn" href="https://mobile.yangkeduo.com/mall_page.html?ps=lx2qQgzDqZ" target="_blank">拼多多NFC店铺</a>
+    <button class="close-nfc" id="closeNfc">关闭</button>
   </div>
 </div>
 
 <div id="boomEaster">💥</div>
-<div id="hugTip">🎉 灰冰的抱抱 +1</div>
-<div id="cdTip">🚫 不能连续点击哦</div>
+<div id="hugTip">🎉 灰冰的抱抱 ×1</div>
+<div id="cdTip">🚫 点击太快啦！</div>
 
 <script>
+// 全局状态管理
+let currentLang = 'cn';
+let isSecret = false; // 副简介模式状态，永远和DOM同步
+
+// 三语完整文本包（主/副完全分离）
+const langPack = {
+  cn: {
+    // 主简介
+    name: "灰冰",
+    role: "小学生",
+    aboutLabel: "自我介绍",
+    introHead: "✨ 关于灰冰",
+    intro: "大家好，我是灰冰。入圈半年的福瑞，香港六年级小学生。有时社恐有时社牛，有自己的兽装。",
+    skillLabel: "技能",
+    skill: "玩抽象 / 低情商 / 会复仇",
+    snsLabel: "社交媒体",
+    sns: "微信、抖音、快手、B站、小红书、QQ",
+    nfcLabel: "NFC商店来源",
+    // 副简介【你要改的内容，就在这里！！！】
+    secretIntro: "嗨，我是🔞🈲的灰冰。可能是我心理出现了一点扭曲，所以你也不用听，你只要看简介就对了——呵呵呵，我是🔞禁的灰冰，是小型兽聚民宿的话...嘿嘿.. 还有晚上要是有小兽太和我共用一张床，我有概率使用神秘服务🅰️🅾️🅰️嘿嘿嘿~⚠︎ ",
+    secretSkill: " 免费服务 / 帮你热床 / 帮你导 / xst? ",
+    secretSns: "推特",
+    // 通用文本
+    loading: "正在加载...",
+    loaded: "加载完成！",
+    welcome: "欢迎来到灰冰的个人主页",
+    enter: "进入",
+    nfcGuide: "查看 NFC 使用说明",
+    logs: "📋 日志",
+    addQQ: "🐾 加我QQ",
+    myDouyin: "🎬 我的抖音",
+    myKuaishou: "🎥 我的快手",
+    myXiaohongshu: "📕 我的小红书",
+    myWechat: "💬 我的微信",
+    fursuitChannel: "📺 兽装频道",
+    myTwitter: "🔗 我的推特",
+    addWechat: "添加我的微信",
+    copyID: "复制微信号",
+    close: "关闭",
+    hug: "🎉 灰冰的抱抱 ×",
+    tooFast: "🚫 点击太快啦！",
+    nfcTitle: "NFC 使用说明",
+    nfcDesc: "这个NFC为测试用途，使用手机APP进行读写、写入和删除。",
+    nfcShop: "拼多多NFC店铺"
+  },
+  tw: {
+    // 主简介
+    name: "灰冰",
+    role: "小學生",
+    aboutLabel: "自我介紹",
+    introHead: "✨ 關於灰冰",
+    intro: "大家好，我是灰冰。入圈半年的福瑞，香港六年級小學生。有時社恐有時社牛，有自己的獸裝。",
+    skillLabel: "技能",
+    skill: "玩抽象 / 低情商 / 會復仇",
+    snsLabel: "社群媒體",
+    sns: "微信、抖音、快手、B站、小紅書、QQ",
+    nfcLabel: "NFC商店來源",
+    // 副简介【繁体版，也要对应改！！！】
+    secretIntro: "嗨，我是🔞🈲的灰冰。 可能是我心理出現了一點扭曲，所以你也不用聽，你只要看簡介就對了——呵呵呵，我是🔞禁的灰冰，是小型獸聚民宿的話...嘿嘿.. 還有晚上要是有小獸太和我共用一張床，我有概率使用神秘服務🅰️🅾️🅰️嘿嘿嘿~⚠ ",
+    secretSkill: "免费服务 / 帮你热床 / 帮你导 / xst? ",
+    secretSns: "推特",
+    // 通用文本
+    loading: "正在載入...",
+    loaded: "載入完成！",
+    welcome: "歡迎來到灰冰的個人主頁",
+    enter: "進入",
+    nfcGuide: "檢視 NFC 使用說明",
+    logs: "📋 紀錄",
+    addQQ: "🐾 加我QQ",
+    myDouyin: "🎬 我的抖音",
+    myKuaishou: "🎥 我的快手",
+    myXiaohongshu: "📕 我的小紅書",
+    myWechat: "💬 我的微信",
+    fursuitChannel: "📺 獸裝頻道",
+    myTwitter: "🔗 我的推特",
+    addWechat: "加入我的微信",
+    copyID: "複製微信號",
+    close: "關閉",
+    hug: "🎉 灰冰的抱抱 ×",
+    tooFast: "🚫 點擊太快囉！",
+    nfcTitle: "NFC 使用說明",
+    nfcDesc: "這個NFC為測試用途，使用手機APP進行讀寫、寫入和刪除。",
+    nfcShop: "拼多多NFC商店"
+  },
+  en: {
+    // 主简介
+    name: "GrayIce",
+    role: "Primary Student",
+    aboutLabel: "About Me",
+    introHead: "✨ About GrayIce",
+    intro: "Hello everyone, I'm GrayIce. I'm a furry for half a year. I'm a Primary 6 student in Hong Kong. Sometimes shy, sometimes outgoing, and I have my own fursuit.",
+    skillLabel: "Skills",
+    skill: "Funny / Low EQ / Revenge",
+    snsLabel: "Social Media",
+    sns: "WeChat, Douyin, Kuaishou, Bilibili, Xiaohongshu, QQ",
+    nfcLabel: "NFC Shop",
+    // 副简介【英文版，也要对应改！！！】
+    secretIntro: "Hi, I'm 🔞🈲's Grey Ice. Maybe I've developed a little psychological twist, so you don't need to listen to anything, just read the introduction—hehehe, I'm 🔞's Grey Ice, and if it's a small animal-themed guesthouse...hehe... Also, if any little animal lovers share a bed with me at night, there's a chance I might use a mystery service 🅰️🅾️🅰️hehehe~⚠︎ ",
+    secretSkill: "Free services / help you warm up your bed / help you guide / xst? ",
+    secretSns: "Twitter",
+    // 通用文本
+    loading: "Loading...",
+    loaded: "Loaded!",
+    welcome: "Welcome to GrayIce's profile",
+    enter: "Enter",
+    nfcGuide: "View NFC Guide",
+    logs: "📋 Logs",
+    addQQ: "🐾 Add me on QQ",
+    myDouyin: "🎬 My Douyin",
+    myKuaishou: "🎥 My Kuaishou",
+    myXiaohongshu: "📕 My Xiaohongshu",
+    myWechat: "💬 My WeChat",
+    fursuitChannel: "📺 Fursuit Channel",
+    myTwitter: "🔗 My Twitter",
+    addWechat: "Add Me on WeChat",
+    copyID: "Copy ID",
+    close: "Close",
+    hug: "🎉 Hug from GrayIce ×",
+    tooFast: "🚫 Too fast!",
+    nfcTitle: "NFC Guide",
+    nfcDesc: "This NFC is experimental. Use app to read, write and delete.",
+    nfcShop: "Pinduoduo NFC Shop"
+  }
+};
+
+// ✅ 切换语言函数，先锁模式，再一次性更新所有内容
+function switchLanguage(lang) {
+  // 1. 更新全局语言状态
+  currentLang = lang;
+  // 2. 更新按钮高亮状态
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  document.getElementById(`btn${lang.toUpperCase()}`).classList.add('active');
+  // 3. 双重确认当前模式：变量+DOM类，100%不会判断错
+  const card = document.getElementById('card');
+  const isSecretMode = isSecret && card.classList.contains('secret-mode');
+  // 4. 读取对应语言包
+  const text = langPack[lang];
+  // 5. 一次性更新所有内容，绝对不会出现先主后副的情况
+  document.getElementById('nameClick').innerText = isSecretMode ? `${text.name}?` : text.name;
+  document.getElementById('roleText').innerText = isSecretMode ? '' : text.role;
+  document.getElementById('aboutLabel').innerText = text.aboutLabel;
+  document.getElementById('introHead').innerText = text.introHead;
+  // 核心：根据模式选主/副简介
+  document.getElementById('infoDesc').innerText = isSecretMode ? text.secretIntro : text.intro;
+  document.getElementById('skillLabel').innerText = text.skillLabel;
+  document.getElementById('infoSkill').innerText = isSecretMode ? text.secretSkill : text.skill;
+  document.getElementById('snsLabel').innerText = text.snsLabel;
+  document.getElementById('infoSns').innerText = isSecretMode ? text.secretSns : text.sns;
+  document.getElementById('nfcLabel').innerText = text.nfcLabel;
+  // 通用内容更新
+  document.querySelector('.loading-text').innerText = text.loading;
+  document.querySelector('.done-title').innerText = text.loaded;
+  document.querySelector('.done-desc').innerText = text.welcome;
+  document.getElementById('startBtn').innerText = text.enter;
+  document.getElementById('openNfc').innerText = text.nfcGuide;
+  document.getElementById('logBtn').innerText = text.logs;
+  document.querySelector('.qq').innerText = text.addQQ;
+  document.querySelector('.douyin').innerText = text.myDouyin;
+  document.querySelector('.kuaishou').innerText = text.myKuaishou;
+  document.querySelector('.xiaohongshu').innerText = text.myXiaohongshu;
+  document.querySelector('.wechat').innerText = text.myWechat;
+  document.querySelector('.fursuit').innerText = text.fursuitChannel;
+  document.querySelector('.twitter').innerText = text.myTwitter;
+  document.querySelector('.wechat-card h3').innerText = text.addWechat;
+  document.getElementById('copyBtn').innerText = text.copyID;
+  document.getElementById('closeWechat').innerText = text.close;
+  document.querySelector('.close-log').innerText = text.close;
+  document.getElementById('closeNfc').innerText = text.close;
+  document.getElementById('hugTip').innerText = text.hug + '1';
+  document.getElementById('cdTip').innerText = text.tooFast;
+  document.querySelector('.nfc-title').innerText = text.nfcTitle;
+  document.querySelector('.nfc-desc').innerText = text.nfcDesc;
+  document.querySelector('.nfc-pdd-btn').innerText = text.nfcShop;
+}
+
+// 绑定语言切换按钮事件
+document.getElementById('btnCN').addEventListener('click', () => switchLanguage('cn'));
+document.getElementById('btnTW').addEventListener('click', () => switchLanguage('tw'));
+document.getElementById('btnEN').addEventListener('click', () => switchLanguage('en'));
+
+// 页面基础功能
 const startBtn = document.getElementById('startBtn');
 const loader = document.getElementById('loader');
 const card = document.getElementById('card');
-
-startBtn.addEventListener('click', function() {
+startBtn.addEventListener('click', () => {
   loader.style.display = 'none';
   card.classList.add('show');
 });
 
-// 日志
+// 日志面板
 const logPanel = document.getElementById('logPanel');
 const logBtn = document.getElementById('logBtn');
 const closeLog = document.querySelector('.close-log');
-
 document.addEventListener('keydown', (e) => {
   if(e.key.toLowerCase() === 'l') logPanel.style.display = 'flex';
   if(e.key === 'Escape') logPanel.style.display = 'none';
 });
-
 logBtn.onclick = () => logPanel.style.display = 'flex';
 closeLog.onclick = () => logPanel.style.display = 'none';
 logPanel.onclick = (e) => {
   if(e.target === logPanel) logPanel.style.display = 'none';
 };
 
-// 微信
+// 微信弹窗
 const wechatBtn = document.getElementById('wechatBtn');
 const wechatModal = document.getElementById('wechatModal');
 const closeWechat = document.getElementById('closeWechat');
 const copyBtn = document.getElementById('copyBtn');
 const wxId = document.getElementById('wxId').innerText;
-
 wechatBtn.onclick = () => wechatModal.style.display = 'flex';
 closeWechat.onclick = () => wechatModal.style.display = 'none';
 wechatModal.onclick = (e) => {
@@ -699,18 +750,17 @@ wechatModal.onclick = (e) => {
 };
 copyBtn.onclick = () => {
   navigator.clipboard.writeText(wxId).then(() => {
-    alert('复制成功！快去微信添加我吧～');
+    alert(langPack[currentLang].copyID + '成功！');
   });
 };
 
-// 抱抱
+// 名字点击抱抱计数
 const nameClick = document.getElementById('nameClick');
 const hugTip = document.getElementById('hugTip');
 const cdTip = document.getElementById('cdTip');
 let hugCount = 0;
 let lastClick = 0;
 const CD = 50;
-
 nameClick.addEventListener('click', () => {
   const now = Date.now();
   if (now - lastClick < CD) {
@@ -720,7 +770,7 @@ nameClick.addEventListener('click', () => {
   }
   lastClick = now;
   hugCount++;
-  hugTip.textContent = `🎉 灰冰的抱抱 ×${hugCount}`;
+  hugTip.textContent = langPack[currentLang].hug + hugCount;
   hugTip.style.display = 'block';
   setTimeout(() => hugTip.style.display = 'none', 1200);
 });
@@ -729,87 +779,59 @@ nameClick.addEventListener('click', () => {
 const openNfc = document.getElementById('openNfc');
 const nfcModal = document.getElementById('nfcModal');
 const closeNfc = document.getElementById('closeNfc');
-
 openNfc.onclick = () => nfcModal.style.display = 'flex';
 closeNfc.onclick = () => nfcModal.style.display = 'none';
 nfcModal.onclick = (e) => {
   if(e.target === nfcModal) nfcModal.style.display = 'none';
 };
 
-// 彩蛋切换
+// ✅ 彩蛋模式（副简介）
 const easterBtn = document.getElementById('easterBtn');
 const boomEaster = document.getElementById('boomEaster');
 const nameEl = document.getElementById('nameClick');
-const titleEl = document.querySelector('.title');
+const titleEl = document.getElementById('roleText');
 const infoDescEl = document.getElementById('infoDesc');
 const infoSkillEl = document.getElementById('infoSkill');
 const infoSnsEl = document.getElementById('infoSns');
 const twitterBtn = document.getElementById('twitterBtn');
-
+// 副简介要隐藏的内容
 const hideInSecret = [
-  '#infoSecQqInfo','#infoSecWechatInfo','#infoSecPhone','#infoSecEmail','#infoSecXiaohongshu'
+  '#infoSecQqInfo','#infoSecWechatInfo','#infoSecPhone','#infoSecEmail','#infoSecXiaohongshu','#infoSecNfc'
 ];
-
 let boomCount = 0;
-let isSecret = false;
-
-const orig = {
-  name: "灰冰",
-  title: "小学生",
-  desc: "Hello大家好我是灰冰👋是入圈了半年的福瑞，是一名香港六年级小学生，也是会偶尔抱怨的小学生，偶尔会社恐，偶尔也会社牛，此外还有拥有自己的兽装",
-  skill: "玩抽象 / 低情商 / 会复仇",
-  sns: "微信、抖音、快手、b站、小红书、qq"
-};
-
-const secret = {
-  name: "灰冰???",
-  title: "小BT",
-  desc: "嗨，我是🔞🈲的灰冰。可能是我心理出现了一点扭曲，所以你也不用听，你只要看简介就对了——呵呵呵，我是🔞禁的灰冰，是小型兽聚民宿的话...嘿嘿.. 还有晚上要是有小兽太和我共用一张床，我有概率使用神秘服务🅰️🅾️🅰️嘿嘿嘿~⚠︎",
-  skill: "免费服务 / 帮你热床 / 帮你导 / xst? ",
-  sns: "推特"
-};
 
 easterBtn.addEventListener('click', () => {
   boomEaster.style.display = 'block';
   setTimeout(() => {
     boomEaster.style.display = 'none';
   }, 800);
-
   boomCount++;
   if (boomCount >= 5) {
     boomCount = 0;
+    // 先更新全局状态
     isSecret = !isSecret;
     logPanel.style.display = 'none';
     loader.style.display = 'flex';
-    document.querySelector('.loading-text').innerText = "正在切换隐藏简介...";
-
+    document.querySelector('.loading-text').innerText = langPack[currentLang].loading;
+    // 延迟更新DOM，状态已经提前改好了
     setTimeout(() => {
       loader.style.display = 'none';
-      if (isSecret) {
-        card.classList.add('secret-mode');
-        nameEl.innerText = secret.name;
-        titleEl.innerText = secret.title;
-        infoDescEl.innerText = secret.desc;
-        infoSkillEl.innerText = secret.skill;
-        infoSnsEl.innerText = secret.sns;
-        hideInSecret.forEach(sel => document.querySelector(sel).style.display = 'none');
-        document.querySelectorAll('.btn:not(.log-btn):not(.twitter)').forEach(btn => btn.style.display = 'none');
-        twitterBtn.style.display = 'block';
-      } else {
-        card.classList.remove('secret-mode');
-        nameEl.innerText = orig.name;
-        titleEl.innerText = orig.title;
-        infoDescEl.innerText = orig.desc;
-        infoSkillEl.innerText = orig.skill;
-        infoSnsEl.innerText = orig.sns;
-        hideInSecret.forEach(sel => document.querySelector(sel).style.display = 'block');
-        document.querySelectorAll('.btn:not(.twitter)').forEach(btn => btn.style.display = 'block');
-        twitterBtn.style.display = 'none';
-      }
+      const text = langPack[currentLang];
+      // 同步DOM类和状态
+      card.classList.toggle('secret-mode', isSecret);
+      nameEl.innerText = isSecret ? `${text.name}?` : text.name;
+      titleEl.innerText = isSecret ? '' : text.role;
+      // 用当前语言更新主/副内容
+      infoDescEl.innerText = isSecret ? text.secretIntro : text.intro;
+      infoSkillEl.innerText = isSecret ? text.secretSkill : text.skill;
+      infoSnsEl.innerText = isSecret ? text.secretSns : text.sns;
+      // 显隐控制（包含NFC介绍）
+      hideInSecret.forEach(sel => document.querySelector(sel).style.display = isSecret ? 'none' : 'block');
+      document.querySelectorAll('.btn:not(.log-btn):not(.twitter)').forEach(btn => btn.style.display = isSecret ? 'none' : 'block');
+      twitterBtn.style.display = isSecret ? 'block' : 'none';
     }, 1500);
   }
 });
 </script>
 </body>
 </html>
-
