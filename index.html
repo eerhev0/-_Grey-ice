@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>名片</title>
+<title>灰冰名片</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
 body{
@@ -16,7 +16,6 @@ body{
   body{background:#121118;color:#eee}
 }
 
-/* 左上角三个圆形语言按钮 */
 .lang-switch {
   position: fixed;
   top: 20px;
@@ -364,6 +363,11 @@ body{
 @keyframes glow-yellow { from {box-shadow:0 0 5px #ffd700;} to {box-shadow:0 0 15px #ffd700;} }
 .fursuit:hover { background: #e6c200; }
 
+/* Phigros 按钮样式：粉红色 */
+.phigros { background: #ff6699; animation: bounce 2s infinite 1.3s, glow-pink 2s infinite alternate; }
+@keyframes glow-pink { from {box-shadow:0 0 5px #ff6699;} to {box-shadow:0 0 15px #ff6699;} }
+.phigros:hover { background: #ff4d88; }
+
 .log-btn {
   background: linear-gradient(90deg, #ffdd00, #ff3333, #33cc33, #3399ff);
   background-size: 400% 100%;
@@ -406,7 +410,6 @@ body{
 </head>
 <body>
 
-<!-- 三个圆形语言按钮 -->
 <div class="lang-switch">
   <button class="lang-btn btn-cn active" id="btnCN">简</button>
   <button class="lang-btn btn-tw" id="btnTW">繁</button>
@@ -491,6 +494,9 @@ body{
   <button class="btn wechat" id="wechatBtn">💬 我的微信</button>
   <a class="btn fursuit" href="https://fursuit.tv/@eerhev0" target="_blank">📺 兽装频道</a>
 
+  <!-- 新增的 Phigros 按钮 -->
+  <a class="btn phigros" href="https://mihoyo.wiki/Phigros/tapToStart/index.html" target="_blank">🎵 phigros网页版</a>
+
   <a class="btn twitter" id="twitterBtn" href="https://x.com/ggcg281650" target="_blank" style="display:none;">🔗 我的推特</a>
 
   <button class="btn log-btn" id="logBtn">📋 日志</button>
@@ -509,12 +515,11 @@ body{
   <div class="log-box">
     <button id="easterBtn">!</button>
     <h2>📋 更新日志</h2>
-    <p><strong>Version: 3.1</strong><br>Date: 2026-04-04</p>
-    <h3>✅ 优化</h3>
+    <p><strong>Version: 3.2</strong><br>Date: 2026-04-21</p>
+    <h3>✅ 新增功能</h3>
     <ul>
-      <li>副简介（彩蛋模式）隐藏NFC介绍</li>
-      <li>彻底修复副简介切换语言跳回主简介的bug</li>
-      <li>简繁英三语完整同步</li>
+      <li>主简介添加 Phigros 网页版按钮（粉红色）</li>
+      <li>保留之前所有功能和修复</li>
     </ul>
     <button class="close-log">关闭</button>
   </div>
@@ -534,29 +539,24 @@ body{
 <div id="cdTip">🚫 点击太快啦！</div>
 
 <script>
-// 全局状态管理
 let currentLang = 'cn';
-let isSecret = false; // 副简介模式状态，永远和DOM同步
+let isSecret = false;
 
-// 三语完整文本包（主/副完全分离）
 const langPack = {
   cn: {
-    // 主简介
     name: "灰冰",
     role: "小学生",
     aboutLabel: "自我介绍",
     introHead: "✨ 关于灰冰",
     intro: "大家好，我是灰冰。入圈半年的福瑞，香港六年级小学生。有时社恐有时社牛，有自己的兽装。",
+    secretIntro: "嗨，我是🔞🈲的灰冰。可能是我心理出现了一点扭曲，所以你也不用听，你只要看简介就对了——呵呵呵，我是🔞禁的灰冰，是小型兽聚民宿的话...嘿嘿.. 还有晚上要是有小兽太和我共用一张床，我有概率使用神秘服务🅰️🅾️🅰️嘿嘿嘿~⚠︎",
+    secretSkill: "免费服务 / 帮你热床 / 帮你导 / xst? ",
+    secretSns: "推特",
     skillLabel: "技能",
     skill: "玩抽象 / 低情商 / 会复仇",
     snsLabel: "社交媒体",
     sns: "微信、抖音、快手、B站、小红书、QQ",
     nfcLabel: "NFC商店来源",
-    // 副简介【你要改的内容，就在这里！！！】
-    secretIntro: "嗨，我是🔞🈲的灰冰。可能是我心理出现了一点扭曲，所以你也不用听，你只要看简介就对了——呵呵呵，我是🔞禁的灰冰，是小型兽聚民宿的话...嘿嘿.. 还有晚上要是有小兽太和我共用一张床，我有概率使用神秘服务🅰️🅾️🅰️嘿嘿嘿~⚠︎ ",
-    secretSkill: " 免费服务 / 帮你热床 / 帮你导 / xst? ",
-    secretSns: "推特",
-    // 通用文本
     loading: "正在加载...",
     loaded: "加载完成！",
     welcome: "欢迎来到灰冰的个人主页",
@@ -569,6 +569,7 @@ const langPack = {
     myXiaohongshu: "📕 我的小红书",
     myWechat: "💬 我的微信",
     fursuitChannel: "📺 兽装频道",
+    phigrosBtn: "🎵 phigros网页版",
     myTwitter: "🔗 我的推特",
     addWechat: "添加我的微信",
     copyID: "复制微信号",
@@ -580,22 +581,19 @@ const langPack = {
     nfcShop: "拼多多NFC店铺"
   },
   tw: {
-    // 主简介
     name: "灰冰",
     role: "小學生",
     aboutLabel: "自我介紹",
     introHead: "✨ 關於灰冰",
     intro: "大家好，我是灰冰。入圈半年的福瑞，香港六年級小學生。有時社恐有時社牛，有自己的獸裝。",
+    secretIntro: "嗨，我是🔞🈲的灰冰。 可能是我心理出現了一點扭曲，所以你也不用聽，你只要看簡介就對了——呵呵呵，我是🔞禁的灰冰，是小型獸聚民宿的話...嘿嘿.. 還有晚上要是有小獸太和我共用一張床，我有概率使用神秘服務🅰️🅾️🅰️嘿嘿嘿~⚠",
+    secretSkill: "免费服务 / 帮你热床 / 帮你导 / xst?",
+    secretSns: "推特",
     skillLabel: "技能",
     skill: "玩抽象 / 低情商 / 會復仇",
     snsLabel: "社群媒體",
     sns: "微信、抖音、快手、B站、小紅書、QQ",
     nfcLabel: "NFC商店來源",
-    // 副简介【繁体版，也要对应改！！！】
-    secretIntro: "嗨，我是🔞🈲的灰冰。 可能是我心理出現了一點扭曲，所以你也不用聽，你只要看簡介就對了——呵呵呵，我是🔞禁的灰冰，是小型獸聚民宿的話...嘿嘿.. 還有晚上要是有小獸太和我共用一張床，我有概率使用神秘服務🅰️🅾️🅰️嘿嘿嘿~⚠ ",
-    secretSkill: "免费服务 / 帮你热床 / 帮你导 / xst? ",
-    secretSns: "推特",
-    // 通用文本
     loading: "正在載入...",
     loaded: "載入完成！",
     welcome: "歡迎來到灰冰的個人主頁",
@@ -608,6 +606,7 @@ const langPack = {
     myXiaohongshu: "📕 我的小紅書",
     myWechat: "💬 我的微信",
     fursuitChannel: "📺 獸裝頻道",
+    phigrosBtn: "🎵 phigros網頁版",
     myTwitter: "🔗 我的推特",
     addWechat: "加入我的微信",
     copyID: "複製微信號",
@@ -619,22 +618,19 @@ const langPack = {
     nfcShop: "拼多多NFC商店"
   },
   en: {
-    // 主简介
     name: "GrayIce",
     role: "Primary Student",
     aboutLabel: "About Me",
     introHead: "✨ About GrayIce",
     intro: "Hello everyone, I'm GrayIce. I'm a furry for half a year. I'm a Primary 6 student in Hong Kong. Sometimes shy, sometimes outgoing, and I have my own fursuit.",
+    secretIntro: "Hi, I'm 🔞🈲's Grey Ice. Maybe I've developed a little psychological twist, so you don't need to listen to anything, just read the introduction—hehehe, I'm 🔞's Grey Ice, and if it's a small animal-themed guesthouse...hehe... Also, if any little animal lovers share a bed with me at night, there's a chance I might use a mystery service 🅰️🅾️🅰️hehehe~⚠︎",
+    secretSkill: "Free services / help you warm up your bed / help you guide / xst?",
+    secretSns: "Twitter",
     skillLabel: "Skills",
     skill: "Funny / Low EQ / Revenge",
     snsLabel: "Social Media",
     sns: "WeChat, Douyin, Kuaishou, Bilibili, Xiaohongshu, QQ",
     nfcLabel: "NFC Shop",
-    // 副简介【英文版，也要对应改！！！】
-    secretIntro: "Hi, I'm 🔞🈲's Grey Ice. Maybe I've developed a little psychological twist, so you don't need to listen to anything, just read the introduction—hehehe, I'm 🔞's Grey Ice, and if it's a small animal-themed guesthouse...hehe... Also, if any little animal lovers share a bed with me at night, there's a chance I might use a mystery service 🅰️🅾️🅰️hehehe~⚠︎ ",
-    secretSkill: "Free services / help you warm up your bed / help you guide / xst? ",
-    secretSns: "Twitter",
-    // 通用文本
     loading: "Loading...",
     loaded: "Loaded!",
     welcome: "Welcome to GrayIce's profile",
@@ -647,6 +643,7 @@ const langPack = {
     myXiaohongshu: "📕 My Xiaohongshu",
     myWechat: "💬 My WeChat",
     fursuitChannel: "📺 Fursuit Channel",
+    phigrosBtn: "🎵 Phigros Web",
     myTwitter: "🔗 My Twitter",
     addWechat: "Add Me on WeChat",
     copyID: "Copy ID",
@@ -659,62 +656,55 @@ const langPack = {
   }
 };
 
-// ✅ 切换语言函数，先锁模式，再一次性更新所有内容
 function switchLanguage(lang) {
-  // 1. 更新全局语言状态
   currentLang = lang;
-  // 2. 更新按钮高亮状态
-  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(`btn${lang.toUpperCase()}`).classList.add('active');
-  // 3. 双重确认当前模式：变量+DOM类，100%不会判断错
   const card = document.getElementById('card');
   const isSecretMode = isSecret && card.classList.contains('secret-mode');
-  // 4. 读取对应语言包
-  const text = langPack[lang];
-  // 5. 一次性更新所有内容，绝对不会出现先主后副的情况
-  document.getElementById('nameClick').innerText = isSecretMode ? `${text.name}?` : text.name;
-  document.getElementById('roleText').innerText = isSecretMode ? '' : text.role;
-  document.getElementById('aboutLabel').innerText = text.aboutLabel;
-  document.getElementById('introHead').innerText = text.introHead;
-  // 核心：根据模式选主/副简介
-  document.getElementById('infoDesc').innerText = isSecretMode ? text.secretIntro : text.intro;
-  document.getElementById('skillLabel').innerText = text.skillLabel;
-  document.getElementById('infoSkill').innerText = isSecretMode ? text.secretSkill : text.skill;
-  document.getElementById('snsLabel').innerText = text.snsLabel;
-  document.getElementById('infoSns').innerText = isSecretMode ? text.secretSns : text.sns;
-  document.getElementById('nfcLabel').innerText = text.nfcLabel;
-  // 通用内容更新
-  document.querySelector('.loading-text').innerText = text.loading;
-  document.querySelector('.done-title').innerText = text.loaded;
-  document.querySelector('.done-desc').innerText = text.welcome;
-  document.getElementById('startBtn').innerText = text.enter;
-  document.getElementById('openNfc').innerText = text.nfcGuide;
-  document.getElementById('logBtn').innerText = text.logs;
-  document.querySelector('.qq').innerText = text.addQQ;
-  document.querySelector('.douyin').innerText = text.myDouyin;
-  document.querySelector('.kuaishou').innerText = text.myKuaishou;
-  document.querySelector('.xiaohongshu').innerText = text.myXiaohongshu;
-  document.querySelector('.wechat').innerText = text.myWechat;
-  document.querySelector('.fursuit').innerText = text.fursuitChannel;
-  document.querySelector('.twitter').innerText = text.myTwitter;
-  document.querySelector('.wechat-card h3').innerText = text.addWechat;
-  document.getElementById('copyBtn').innerText = text.copyID;
-  document.getElementById('closeWechat').innerText = text.close;
-  document.querySelector('.close-log').innerText = text.close;
-  document.getElementById('closeNfc').innerText = text.close;
-  document.getElementById('hugTip').innerText = text.hug + '1';
-  document.getElementById('cdTip').innerText = text.tooFast;
-  document.querySelector('.nfc-title').innerText = text.nfcTitle;
-  document.querySelector('.nfc-desc').innerText = text.nfcDesc;
-  document.querySelector('.nfc-pdd-btn').innerText = text.nfcShop;
+  const t = langPack[lang];
+
+  document.getElementById('nameClick').innerText = isSecretMode ? `${t.name}?` : t.name;
+  document.getElementById('roleText').innerText = isSecretMode ? '' : t.role;
+  document.getElementById('aboutLabel').innerText = t.aboutLabel;
+  document.getElementById('introHead').innerText = t.introHead;
+  document.getElementById('infoDesc').innerText = isSecretMode ? t.secretIntro : t.intro;
+  document.getElementById('skillLabel').innerText = t.skillLabel;
+  document.getElementById('infoSkill').innerText = isSecretMode ? t.secretSkill : t.skill;
+  document.getElementById('snsLabel').innerText = t.snsLabel;
+  document.getElementById('infoSns').innerText = isSecretMode ? t.secretSns : t.sns;
+  document.getElementById('nfcLabel').innerText = t.nfcLabel;
+
+  document.querySelector('.loading-text').innerText = t.loading;
+  document.querySelector('.done-title').innerText = t.loaded;
+  document.querySelector('.done-desc').innerText = t.welcome;
+  document.getElementById('startBtn').innerText = t.enter;
+  document.getElementById('openNfc').innerText = t.nfcGuide;
+  document.getElementById('logBtn').innerText = t.logs;
+  document.querySelector('.qq').innerText = t.addQQ;
+  document.querySelector('.douyin').innerText = t.myDouyin;
+  document.querySelector('.kuaishou').innerText = t.myKuaishou;
+  document.querySelector('.xiaohongshu').innerText = t.myXiaohongshu;
+  document.querySelector('.wechat').innerText = t.myWechat;
+  document.querySelector('.fursuit').innerText = t.fursuitChannel;
+  document.querySelector('.phigros').innerText = t.phigrosBtn;
+  document.querySelector('.twitter').innerText = t.myTwitter;
+  document.querySelector('.wechat-card h3').innerText = t.addWechat;
+  document.getElementById('copyBtn').innerText = t.copyID;
+  document.getElementById('closeWechat').innerText = t.close;
+  document.querySelector('.close-log').innerText = t.close;
+  document.getElementById('closeNfc').innerText = t.close;
+  document.getElementById('hugTip').innerText = t.hug + '1';
+  document.getElementById('cdTip').innerText = t.tooFast;
+  document.querySelector('.nfc-title').innerText = t.nfcTitle;
+  document.querySelector('.nfc-desc').innerText = t.nfcDesc;
+  document.querySelector('.nfc-pdd-btn').innerText = t.nfcShop;
 }
 
-// 绑定语言切换按钮事件
-document.getElementById('btnCN').addEventListener('click', () => switchLanguage('cn'));
-document.getElementById('btnTW').addEventListener('click', () => switchLanguage('tw'));
-document.getElementById('btnEN').addEventListener('click', () => switchLanguage('en'));
+document.getElementById('btnCN').onclick = () => switchLanguage('cn');
+document.getElementById('btnTW').onclick = () => switchLanguage('tw');
+document.getElementById('btnEN').onclick = () => switchLanguage('en');
 
-// 页面基础功能
 const startBtn = document.getElementById('startBtn');
 const loader = document.getElementById('loader');
 const card = document.getElementById('card');
@@ -723,7 +713,6 @@ startBtn.addEventListener('click', () => {
   card.classList.add('show');
 });
 
-// 日志面板
 const logPanel = document.getElementById('logPanel');
 const logBtn = document.getElementById('logBtn');
 const closeLog = document.querySelector('.close-log');
@@ -737,7 +726,6 @@ logPanel.onclick = (e) => {
   if(e.target === logPanel) logPanel.style.display = 'none';
 };
 
-// 微信弹窗
 const wechatBtn = document.getElementById('wechatBtn');
 const wechatModal = document.getElementById('wechatModal');
 const closeWechat = document.getElementById('closeWechat');
@@ -754,7 +742,6 @@ copyBtn.onclick = () => {
   });
 };
 
-// 名字点击抱抱计数
 const nameClick = document.getElementById('nameClick');
 const hugTip = document.getElementById('hugTip');
 const cdTip = document.getElementById('cdTip');
@@ -775,7 +762,6 @@ nameClick.addEventListener('click', () => {
   setTimeout(() => hugTip.style.display = 'none', 1200);
 });
 
-// NFC弹窗
 const openNfc = document.getElementById('openNfc');
 const nfcModal = document.getElementById('nfcModal');
 const closeNfc = document.getElementById('closeNfc');
@@ -785,7 +771,6 @@ nfcModal.onclick = (e) => {
   if(e.target === nfcModal) nfcModal.style.display = 'none';
 };
 
-// ✅ 彩蛋模式（副简介）
 const easterBtn = document.getElementById('easterBtn');
 const boomEaster = document.getElementById('boomEaster');
 const nameEl = document.getElementById('nameClick');
@@ -794,7 +779,7 @@ const infoDescEl = document.getElementById('infoDesc');
 const infoSkillEl = document.getElementById('infoSkill');
 const infoSnsEl = document.getElementById('infoSns');
 const twitterBtn = document.getElementById('twitterBtn');
-// 副简介要隐藏的内容
+const phigrosBtn = document.querySelector('.phigros');
 const hideInSecret = [
   '#infoSecQqInfo','#infoSecWechatInfo','#infoSecPhone','#infoSecEmail','#infoSecXiaohongshu','#infoSecNfc'
 ];
@@ -808,24 +793,20 @@ easterBtn.addEventListener('click', () => {
   boomCount++;
   if (boomCount >= 5) {
     boomCount = 0;
-    // 先更新全局状态
     isSecret = !isSecret;
     logPanel.style.display = 'none';
     loader.style.display = 'flex';
     document.querySelector('.loading-text').innerText = langPack[currentLang].loading;
-    // 延迟更新DOM，状态已经提前改好了
     setTimeout(() => {
       loader.style.display = 'none';
-      const text = langPack[currentLang];
-      // 同步DOM类和状态
+      const t = langPack[currentLang];
       card.classList.toggle('secret-mode', isSecret);
-      nameEl.innerText = isSecret ? `${text.name}?` : text.name;
-      titleEl.innerText = isSecret ? '' : text.role;
-      // 用当前语言更新主/副内容
-      infoDescEl.innerText = isSecret ? text.secretIntro : text.intro;
-      infoSkillEl.innerText = isSecret ? text.secretSkill : text.skill;
-      infoSnsEl.innerText = isSecret ? text.secretSns : text.sns;
-      // 显隐控制（包含NFC介绍）
+      nameEl.innerText = isSecret ? `${t.name}?` : t.name;
+      titleEl.innerText = isSecret ? '' : t.role;
+      infoDescEl.innerText = isSecret ? t.secretIntro : t.intro;
+      infoSkillEl.innerText = isSecret ? t.secretSkill : t.skill;
+      infoSnsEl.innerText = isSecret ? t.secretSns : t.sns;
+
       hideInSecret.forEach(sel => document.querySelector(sel).style.display = isSecret ? 'none' : 'block');
       document.querySelectorAll('.btn:not(.log-btn):not(.twitter)').forEach(btn => btn.style.display = isSecret ? 'none' : 'block');
       twitterBtn.style.display = isSecret ? 'block' : 'none';
